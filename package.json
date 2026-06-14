@@ -1,27 +1,43 @@
 {
-  "name": "codex-guide",
-  "version": "0.1.0",
+  "name": "kelvin-ai-guide",
+  "version": "1.0.0",
   "private": true,
-  "description": "Kelvin AI Guide：面向创作者、开发者与团队的 AI 实战指南",
+  "description": "Kelvin AI Guide — 面向创作者、开发者与团队的 AI 实战指南（Next.js 版）",
   "type": "module",
   "engines": {
     "node": ">=22 <25"
   },
   "scripts": {
-    "dev": "vuepress dev docs --host 0.0.0.0",
-    "build": "vuepress build docs",
-    "clean": "rm -rf docs/.vuepress/.cache docs/.vuepress/.temp docs/.vuepress/dist",
-    "preview": "vuepress dev docs --host 0.0.0.0"
+    "dev": "next dev",
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf .next .turbo node_modules/.cache"
   },
-  "dependencies": {},
+  "dependencies": {
+    "next": "15.5.19",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
   "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.28",
-    "@vuepress/plugin-feed": "2.0.0-rc.128",
-    "@vuepress/plugin-slimsearch": "2.0.0-rc.128",
-    "sass-embedded": "^1.97.2",
-    "vue": "^3.5.26",
-    "vuepress": "2.0.0-rc.28",
-    "vuepress-theme-hope": "2.0.0-rc.106"
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "15.5.19",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "@parcel/watcher",
+      "unrs-resolver"
+    ]
   },
   "packageManager": "pnpm@10.33.0"
 }

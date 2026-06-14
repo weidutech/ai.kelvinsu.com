@@ -16,6 +16,12 @@ docs/.vitepress/dist
 docs/.vuepress/.cache
 docs/.vuepress/.temp
 docs/.vuepress/dist
+legacy/docs/.vuepress/.cache
+legacy/docs/.vuepress/.temp
+legacy/docs/.vuepress/dist
+legacy/**/.cache
+legacy/**/.temp
+legacy/**/dist
 
 # next.js
 .next/
