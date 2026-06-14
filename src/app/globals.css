@@ -1,14 +1,14 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /*
- * Kelvin AI Guide — 设计令牌
- * Tailwind v4 用 @theme 指令定义令牌，自动生成工具类
- * 现代 SaaS 风：参考 Linear / Vercel / Stripe
+ * Kelvin AI Guide — 设计令牌 (Premium SaaS Edition)
+ * 参考：Linear / Vercel / Stripe
+ * 目标：克制、专业、有呼吸感
  */
 
 @theme {
-  /* ===== 品牌色 ===== */
-  /* 主色 teal：保留旧站品牌识别，但提供完整色阶 */
+  /* ===== 品牌色 (Refined Deep Teal) ===== */
   --color-brand-50: #f0fdfa;
   --color-brand-100: #ccfbf1;
   --color-brand-200: #99f6e4;
@@ -16,62 +16,46 @@
   --color-brand-400: #2dd4bf;
   --color-brand-500: #14b8a6;
   --color-brand-600: #0d9488;
-  --color-brand-700: #0f766e; /* 旧站主色，保留为品牌锚点 */
+  --color-brand-700: #0f766e;
   --color-brand-800: #115e59;
   --color-brand-900: #134e4a;
   --color-brand-950: #042f2e;
 
-  /* 强调色 indigo：用于按钮、链接、CTA */
-  --color-accent-50: #eef2ff;
-  --color-accent-100: #e0e7ff;
-  --color-accent-200: #c7d2fe;
-  --color-accent-300: #a5b4fc;
-  --color-accent-400: #818cf8;
+  /* ===== 强调色 (Indigo Accent) ===== */
   --color-accent-500: #6366f1;
   --color-accent-600: #4f46e5;
-  --color-accent-700: #4338ca;
-  --color-accent-800: #3730a3;
-  --color-accent-900: #312e81;
-  --color-accent-950: #1e1b4b;
 
-  /* ===== 字体 ===== */
+  /* ===== 字体 (Tight Tracking for Headings) ===== */
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue",
     Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code",
     "Source Code Pro", Menlo, Monaco, Consolas, monospace;
 
-  /* ===== 圆角（告别全站 8px 的扁平感）===== */
-  --radius-card: 0.75rem; /* 12px 卡片 */
-  --radius-button: 0.5rem; /* 8px 按钮 */
+  /* ===== 圆角 (Soft & Modern) ===== */
+  --radius-card: 1rem;      /* 16px */
+  --radius-button: 0.625rem; /* 10px */
   --radius-pill: 9999px;
 
-  /* ===== 阴影：3 层 soft shadow，营造层次 ===== */
-  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.04);
-  --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.06);
-  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.07), 0 2px 4px -2px rgb(15 23 42 / 0.05);
-  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.08), 0 4px 6px -4px rgb(15 23 42 / 0.05);
-  --shadow-xl: 0 20px 25px -5px rgb(15 23 42 / 0.1), 0 8px 10px -6px rgb(15 23 42 / 0.05);
-  --shadow-glow: 0 0 0 1px rgb(15 118 110 / 0.1), 0 8px 24px -8px rgb(15 118 110 / 0.25);
+  /* ===== 阴影 (Layered Sophistication) ===== */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* 悬浮时的辉光阴影 */
+  --shadow-glow: 0 0 0 1px rgb(15 118 110 / 0.05), 0 20px 50px -12px rgb(15 118 110 / 0.2);
 
   /* ===== 动画 ===== */
-  --animate-lift: lift 0.2s ease-out;
-  --animate-fade-in: fade-in 0.4s ease-out;
+  --animate-in: in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-subtle-lift: lift 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes lift {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-2px);
-  }
-}
-
-@keyframes fade-in {
+@keyframes in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -79,108 +63,104 @@
   }
 }
 
-/* ===== 亮/暗色模式语义令牌 ===== */
-/* 用 :root + .dark 切换语义变量，组件只引用语义色不引用色阶 */
-
+@keyframes lift {
+  to {
+    transform: translateY(-4px);
+  }
+}
+/* ===== 语义变量 (Light/Dark) ===== */
 :root {
-  /* 背景层 */
   --bg-base: #ffffff;
-  --bg-subtle: #f8fafc; /* slate-50 */
-  --bg-muted: #f1f5f9; /* slate-100 */
+  --bg-subtle: #f9fafb;
   --bg-elevated: #ffffff;
 
-  /* 文字 */
-  --text-primary: #0f172a; /* slate-900 */
-  --text-secondary: #475569; /* slate-600 */
-  --text-muted: #94a3b8; /* slate-400 */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
 
-  /* 边框 */
-  --border-default: #e2e8f0; /* slate-200 */
-  --border-strong: #cbd5e1; /* slate-300 */
+  --border-default: #e2e8f0;
+  --border-subtle: #f1f5f9;
 
-  /* 反馈色 */
-  --success: #059669;
-  --warning: #d97706;
-  --danger: #dc2626;
-  --info: #2563eb;
+  /* Premium Tech Accent */
+  --color-vibe-bg: #14b8a6;
+  --color-vibe-text: #ffffff;
 }
 
 .dark {
-  --bg-base: #0b1220; /* 沿用旧站 SVG 的深色基调 */
-  --bg-subtle: #0f172a; /* slate-900 */
-  --bg-muted: #1e293b; /* slate-800 */
-  --bg-elevated: #111827;
+  /* Premium Tech Deep Slate (Not pure black) */
+  --bg-base: #020617;
+  --bg-subtle: #0f172a;
+  --bg-elevated: #1e293b;
 
-  --text-primary: #f1f5f9; /* slate-100 */
-  --text-secondary: #cbd5e1; /* slate-300 */
-  --text-muted: #64748b; /* slate-500 */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
 
-  --border-default: #1e293b; /* slate-800 */
-  --border-strong: #334155; /* slate-700 */
-
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
+  --border-default: #1e293b;
+  --border-subtle: #0f172a;
 }
 
-/* ===== 基础排版重置 ===== */
 @layer base {
-  html {
-    -webkit-text-size-adjust: 100%;
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem; /* 锚点跳转留出 navbar 高度 */
-  }
-
   body {
     background-color: var(--bg-base);
     color: var(--text-primary);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
-
-  /* 标题：字距收紧、字重明确 */
-  h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-  }
-
-  /* 代码：等宽字体 + 背景色 */
-  code, pre, kbd, samp {
-    font-family: var(--font-mono);
-  }
-
-  ::selection {
-    background-color: rgb(15 118 110 / 0.18);
-    color: var(--text-primary);
-  }
-
-  /* 滚动条（webkit） */
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--border-strong);
-    border-radius: 9999px;
-    border: 2px solid var(--bg-base);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
   }
 }
 
-/* ===== 文字平衡（现代 SaaS 站标配）===== */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .animate-blob {
+    animation: blob 10s infinite alternate;
   }
-  .text-pretty {
-    text-wrap: pretty;
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: float 6s ease-in-out 3s infinite;
+  }
+
+  .bg-grid-pattern {
+    background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(100px, -150px) scale(1.2); }
+  66% { transform: translate(-100px, 100px) scale(0.8); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@layer base {
+  h1, h2, h3 {
+    letter-spacing: -0.03em;
+    font-weight: 800;
+  }
+}
+
+@layer utilities {
+  /* 内边框，增加细节质感 */
+  .inner-border {
+    box-shadow: inset 0 0 0 1px var(--border-subtle);
+  }
+  
+  .glass {
+    background: rgba(var(--bg-base), 0.8);
+    backdrop-filter: blur(12px);
   }
 }

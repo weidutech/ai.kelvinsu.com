@@ -1,84 +1,143 @@
-import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Badge } from "@/components/ui/Badge";
+import Link from "next/link";
+import { ArrowRight, BookOpen, Rocket, Briefcase } from "lucide-react";
+import { RecentActivityTicker } from "./RecentActivityTicker";
+import { WechatDialog } from "@/components/ui/WechatDialog";
 
 /**
- * Hero —— 首页主视觉
- * 设计要点（解决旧站"发灰发糊"问题）：
- * - 去掉旧站 webp 蒙层（旧站用 78% 白色叠层，导致整页发灰）
- * - 用微渐变背景 + 装饰性光晕，营造层次但不抢戏
- * - 大标题用 text-balance，副标题用 text-pretty（现代排版）
- * - 主副 CTA 清晰，hover 有微动效
+ * Hero —— Persona-Driven Commercial Landing Page with Dynamic Animations
  */
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      {/* 装饰性背景：径向渐变光晕，替代旧站的发糊蒙层 */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-      >
-        <div className="absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-br from-brand-100/60 via-accent-50/40 to-transparent blur-3xl" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,var(--bg-base))]" />
-        {/* 网格点阵装饰 */}
-        <div
-          className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, var(--border-default) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-            maskImage:
-              "linear-gradient(to bottom, black, transparent 70%)",
-          }}
-        />
+    <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden bg-slate-50 pt-20 pb-32">
+      {/* Premium Animated Background Elements */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        
+        {/* Animated Glowing Orbs */}
+        <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[800px] bg-gradient-to-tr from-brand-300/30 to-blue-400/20 rounded-full blur-[120px] opacity-60 animate-blob"></div>
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[600px] h-[600px] bg-brand-200/40 rounded-full blur-[100px] opacity-60 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-indigo-300/20 rounded-full blur-[100px] opacity-50 animate-blob animation-delay-4000"></div>
       </div>
 
-      <Container className="py-24 sm:py-32">
-        <div className="mx-auto max-w-3xl text-center">
-          <Badge variant="brand" className="mb-6 animate-fade-in">
-            <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-brand-500" />
-            面向创作者、开发者与团队的 AI 实战指南
-          </Badge>
+      <Container className="relative z-10">
+        <div className="grid lg:grid-cols-12 gap-16 lg:gap-8 items-center">
+          
+          {/* Left Content Area (Value Proposition) */}
+          <div className="lg:col-span-5 flex flex-col items-start text-left animate-in">
+            {/* Personal IP Avatar & Badge */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-lg shadow-slate-200">
+                <img src="/images/avatar.jpg" alt="Kelvin" className="w-full h-full object-cover" />
+              </div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                </span>
+                <span className="text-xs font-bold tracking-wider text-slate-600 uppercase">
+                  Kelvin 的实战基地
+                </span>
+              </div>
+            </div>
 
-          <h1 className="text-balance text-4xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-5xl md:text-6xl">
-            先学会，再放大，
-            <span className="bg-gradient-to-r from-brand-700 to-accent-600 bg-clip-text text-transparent">
-              再变现
-            </span>
-          </h1>
+            <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
+              在这里，把 AI <br />
+              变成你的<span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-blue-600 relative inline-block">
+                超级杠杆
+                {/* Underline swoosh animation */}
+                <svg className="absolute w-full h-3 -bottom-1 left-0 text-brand-400/30 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" strokeLinecap="round" />
+                </svg>
+              </span>
+            </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-[var(--text-secondary)] sm:text-xl">
-            从第一次上手 Codex，到把它接入真实工作流。系统整理 CLI、IDE、自动化、
-            工作流与真实案例，帮你完成开发、创作、研究、自动化与团队协作。
-          </p>
+            <p className="mt-6 text-lg text-slate-600 leading-relaxed font-medium">
+              你好，我是 Kelvin。无论你是想从零掌握 AI 技能、寻找副业变现路径，还是需要企业级的 AI 降本增效方案，这里都有为你准备的系统化实战资源。
+            </p>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Button href="/docs/guide/00-overview" size="lg">
-              进入学习路线
-              <span aria-hidden="true">→</span>
-            </Button>
-            <Button href="/docs/recipes" variant="outline" size="lg">
-              浏览实战案例
-            </Button>
+            {/* Social Proof / Stats Ticker */}
+            <div className="mt-12 flex items-center gap-6 pt-8 border-t border-slate-200/80 w-full">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-slate-50 bg-slate-200 flex items-center justify-center overflow-hidden hover:-translate-y-1 transition-transform">
+                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}&backgroundColor=e2e8f0`} alt="user" className="w-full h-full" />
+                  </div>
+                ))}
+              </div>
+              <RecentActivityTicker />
+            </div>
           </div>
 
-          {/* 数据小条：建立可信度 */}
-          <dl className="mx-auto mt-16 grid max-w-lg grid-cols-3 gap-6 border-t border-[var(--border-default)] pt-8">
-            {[
-              { value: "54+", label: "实战教程" },
-              { value: "16", label: "可复用案例" },
-              { value: "100%", label: "免费开源" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <dt className="order-2 text-sm text-[var(--text-muted)]">{stat.label}</dt>
-                <dd className="order-1 text-2xl font-bold tracking-tight text-[var(--text-primary)]">
-                  {stat.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          {/* Right Content Area - Persona Intent Routing Cards */}
+          <div className="lg:col-span-7 relative w-full lg:pl-12 animate-in delay-200">
+            <div className="flex flex-col gap-5">
+              
+              {/* Persona 1: Free Learners */}
+              <Link href="/docs/guide/00-overview" className="group relative bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-slate-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex items-center gap-6 overflow-hidden animate-float">
+                <div className="absolute inset-0 bg-gradient-to-r from-brand-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative z-10 w-14 h-14 shrink-0 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-brand-100 group-hover:text-brand-600 transition-colors">
+                  <BookOpen className="w-6 h-6 text-slate-600 group-hover:text-brand-600" />
+                </div>
+                <div className="relative z-10 flex-1">
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">我是新手 / 白嫖党</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-brand-700 transition-colors">免费学：54篇 AI 实战指南</h3>
+                  <p className="text-sm text-slate-500">从 0 到 1，教你如何安装配置并完成第一个 AI 自动化任务。</p>
+                </div>
+                <div className="relative z-10 w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                  <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white" />
+                </div>
+              </Link>
+
+              {/* Persona 2: Monetizers */}
+              <WechatDialog>
+                <div className="group relative bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-lg hover:shadow-2xl hover:shadow-brand-500/20 hover:-translate-y-2 transition-all duration-300 flex items-center gap-6 overflow-hidden lg:-ml-6 animate-float-delayed z-10 cursor-pointer text-left">
+                  <div className="absolute inset-0 bg-gradient-to-r from-brand-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  
+                  {/* Glowing edge effect on hover */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    <div className="absolute top-0 left-1/4 w-1/2 h-px bg-gradient-to-r from-transparent via-brand-400 to-transparent"></div>
+                    <div className="absolute bottom-0 right-1/4 w-1/2 h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
+                  </div>
+
+                  <div className="relative z-10 w-14 h-14 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center group-hover:bg-brand-500 transition-colors">
+                    <Rocket className="w-6 h-6 text-slate-300 group-hover:text-white" />
+                  </div>
+                  <div className="relative z-10 flex-1">
+                    <div className="text-xs font-bold text-brand-400 uppercase tracking-wider mb-1">我想搞钱 / 做产品</div>
+                    <h3 className="text-xl font-bold text-white mb-1">高阶课：全栈商业闭环与变现</h3>
+                    <p className="text-sm text-slate-400">解锁 16+ 深度商业案例，不写代码也能打造你的独立副业产品。</p>
+                  </div>
+                  <div className="relative z-10 w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-brand-500 transition-colors shadow-lg">
+                    <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white" />
+                  </div>
+                </div>
+              </WechatDialog>
+
+              {/* Persona 3: Bosses / Consulting */}
+              <WechatDialog>
+                <div className="group relative bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-slate-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex items-center gap-6 overflow-hidden animate-float cursor-pointer text-left">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="relative z-10 w-14 h-14 shrink-0 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                    <Briefcase className="w-6 h-6 text-slate-600 group-hover:text-blue-600" />
+                  </div>
+                  <div className="relative z-10 flex-1">
+                    <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">我是老板 / 企业主</div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-blue-700 transition-colors">1对1：企业 AI 降本增效咨询</h3>
+                    <p className="text-sm text-slate-500">针对性诊断业务痛点，为你定制专属的内部 AI 工作流落地方案。</p>
+                  </div>
+                  <div className="relative z-10 w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white" />
+                  </div>
+                </div>
+              </WechatDialog>
+
+            </div>
+          </div>
+
         </div>
       </Container>
     </section>
   );
 }
+

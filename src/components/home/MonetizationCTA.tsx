@@ -1,152 +1,140 @@
+import { Button } from "@/components/ui/Button";
 import { Container, Section } from "@/components/ui/Container";
-import { Badge } from "@/components/ui/Badge";
+import { CheckCircle2 } from "lucide-react";
 
 /**
- * MonetizationCTA —— 变现/升级入口（定价卡）
- * 对应用户商业模型：免费教程 → 会员 → AI 变现课 → 企业咨询
- * 重做：3 张定价卡，中间档高亮（推荐），明确的 CTA
+ * MonetizationCTA —— 变现与支持 (Enterprise SaaS Style)
+ * - 强化“实战课”的高级感与光影
+ * - 移除廉价的边框，改用高斯模糊背景和内阴影
+ * - 优化文字层级
  */
-const offers = [
+const plans = [
   {
-    name: "免费教程 · 持续追更",
+    name: "基础指南",
     price: "¥0",
-    period: "永远免费",
-    description: "先拿免费教程跑通第一条 AI 工作流，在抖音和小红书持续追更。",
-    features: [
-      "54+ 篇实战教程",
-      "16 个可复用案例",
-      "社媒持续更新",
-      "社区答疑",
-    ],
-    cta: "开始学习",
+    period: "Open Source",
+    description: "54 篇全量开源文档，覆盖从安装到基础工作流的所有核心概念。",
+    features: ["全量文档访问", "社区案例库共享", "GitHub 仓库同步更新"],
+    button: "开始学习",
     href: "/docs/guide/00-overview",
-    highlighted: false,
+    featured: false,
   },
   {
-    name: "AI 变现实战课",
-    price: "¥99",
-    period: "一次性",
-    description: "围绕内容、获客、交付、产品化和复用工作流，把 AI 变成收入能力。",
-    features: [
-      "Claude Code 大厂实战配置脚本",
-      "高级提示词合集",
-      "全自动脚本合集",
-      "会员专属案例拆解",
-      "高频可复用工作流",
-    ],
-    cta: "获取实战课",
-    href: "/community/roadmap#monetization-course",
-    highlighted: true,
+    name: "高阶实战课",
+    price: "¥299",
+    period: "终身买断",
+    description: "解锁 16+ 深度行业闭环案例、源码及 Kelvin 的专属社群。",
+    features: ["专属 Prompt 武器库", "长程任务编排源码", "高密度私密答疑圈"],
+    button: "了解 VIP 特权",
+    href: "/premium",
+    featured: true,
   },
   {
-    name: "1 对 1 顾问咨询",
+    name: "企业/专家咨询",
     price: "¥999",
-    period: "/ 小时",
-    description: "面向老板、跨境电商和团队负责人的技术落地与降本增效咨询。每周限额 3 席。",
-    features: [
-      "技术落地方案",
-      "流程改造建议",
-      "团队协作升级",
-      "定制化路径",
-    ],
-    cta: "预约咨询",
-    href: "/community/roadmap#enterprise-consulting",
-    highlighted: false,
+    period: "单次诊断",
+    description: "1 对 1 针对性诊断，为你或你的团队定制专属的 AI 提效落地方案。",
+    features: ["定制化 Agent 开发", "内部工作流审计", "30 天跟进服务"],
+    button: "预约咨询",
+    href: "https://afdian.com",
+    featured: false,
   },
 ];
 
 export function MonetizationCTA() {
   return (
-    <Section className="border-t border-[var(--border-default)]">
+    <Section className="bg-white py-32 relative overflow-hidden">
+      {/* 背景光晕 */}
+      <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[800px] bg-gradient-to-tr from-brand-50/50 to-transparent rounded-full blur-[120px] pointer-events-none -z-10"></div>
+      
       <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <Badge variant="brand" className="mb-4">
-            升级路径
-          </Badge>
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl">
-            先免费跑通，再选择适合你的升级路径
+        <div className="text-center mb-20 relative z-10">
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+            助力你的 AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-400">进阶之旅</span>
           </h2>
-          <p className="mt-4 text-pretty text-lg text-[var(--text-secondary)]">
-            不需要一次到位。先看到结果，再决定是否系统升级。
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-slate-500 font-medium">
+            除了免费文档，我们还提供更深度的实战资源与专家服务，帮你跨越从“知道”到“做到”的鸿沟。
           </p>
         </div>
 
-        <div className="mx-auto mt-14 grid max-w-5xl gap-6 md:grid-cols-3">
-          {offers.map((offer) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto relative z-10">
+          {plans.map((plan) => (
             <div
-              key={offer.name}
-              className={`relative flex flex-col rounded-card border p-7 transition-all ${
-                offer.highlighted
-                  ? "border-brand-400 bg-[var(--bg-elevated)] shadow-xl ring-1 ring-brand-200 md:-translate-y-3"
-                  : "border-[var(--border-default)] bg-[var(--bg-elevated)] shadow-xs hover:shadow-md"
+              key={plan.name}
+              className={`relative flex flex-col p-8 rounded-[2rem] transition-all duration-500 ${
+                plan.featured
+                  ? "bg-slate-900 text-white shadow-2xl shadow-brand-900/20 md:-translate-y-4 md:scale-105 z-10"
+                  : "bg-white border border-slate-200/60 shadow-sm hover:shadow-md hover:border-slate-300"
               }`}
             >
-              {offer.highlighted && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge variant="brand" className="shadow-sm">
-                    ⭐ 推荐
-                  </Badge>
-                </div>
+              {/* Featured 专属装饰 */}
+              {plan.featured && (
+                <>
+                  <div className="absolute inset-0 rounded-[2rem] ring-1 ring-inset ring-white/10 pointer-events-none"></div>
+                  <div className="absolute -top-3 inset-x-0 flex justify-center">
+                    <span className="bg-brand-500 text-white text-[11px] uppercase tracking-widest font-black px-4 py-1 rounded-full shadow-lg shadow-brand-500/30">
+                      Most Popular
+                    </span>
+                  </div>
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/20 rounded-full blur-[80px] pointer-events-none" />
+                </>
               )}
 
-              <h3 className="text-lg font-semibold text-[var(--text-primary)]">{offer.name}</h3>
-
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">
-                  {offer.price}
-                </span>
-                <span className="text-sm text-[var(--text-muted)]">{offer.period}</span>
+              <div className="mb-8 relative z-10">
+                <h3 className={`text-sm font-bold uppercase tracking-widest ${
+                  plan.featured ? "text-brand-300" : "text-slate-500"
+                }`}>
+                  {plan.name}
+                </h3>
+                <div className="mt-6 flex items-baseline gap-2">
+                  <span className={`text-5xl font-extrabold tracking-tight ${
+                    plan.featured ? "text-white" : "text-slate-900"
+                  }`}>
+                    {plan.price}
+                  </span>
+                  <span className={`text-sm font-semibold ${
+                    plan.featured ? "text-slate-400" : "text-slate-400"
+                  }`}>
+                    / {plan.period}
+                  </span>
+                </div>
+                <p className={`mt-6 text-sm font-medium leading-relaxed ${
+                  plan.featured ? "text-slate-300" : "text-slate-500"
+                }`}>
+                  {plan.description}
+                </p>
               </div>
 
-              <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">
-                {offer.description}
-              </p>
+              <div className={`w-full h-px mb-8 ${plan.featured ? "bg-white/10" : "bg-slate-100"}`}></div>
 
-              <ul className="mt-6 flex-1 space-y-2.5">
-                {offer.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"
-                  >
-                    <svg
-                      className="mt-0.5 h-4 w-4 shrink-0 text-brand-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2.5}
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                    {feature}
+              <ul className="space-y-4 mb-10 flex-1 relative z-10">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3 text-sm font-medium">
+                    <CheckCircle2 className={`w-5 h-5 shrink-0 ${
+                      plan.featured ? "text-brand-400" : "text-brand-600"
+                    }`} />
+                    <span className={plan.featured ? "text-slate-200" : "text-slate-600"}>
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
 
-              <a
-                href={offer.href}
-                className={`mt-7 inline-flex h-11 items-center justify-center rounded-button px-5 text-sm font-semibold transition-all ${
-                  offer.highlighted
-                    ? "bg-brand-700 text-white shadow-sm hover:bg-brand-800 hover:shadow-md active:scale-[0.98]"
-                    : "border border-[var(--border-strong)] text-[var(--text-primary)] hover:border-brand-400 hover:text-brand-700"
+              <Button
+                href={plan.href}
+                className={`w-full justify-center py-6 text-base rounded-2xl font-bold tracking-wide relative z-10 transition-all duration-300 ${
+                  plan.featured 
+                    ? "bg-brand-500 hover:bg-brand-400 text-white shadow-[0_0_40px_rgb(20,184,166,0.3)] hover:shadow-[0_0_60px_rgb(20,184,166,0.5)] border-0" 
+                    : "bg-slate-50 hover:bg-slate-100 text-slate-900 border-0"
                 }`}
               >
-                {offer.cta}
-              </a>
+                {plan.button}
+              </Button>
             </div>
           ))}
         </div>
-
-        <p className="mt-10 text-center text-sm text-[var(--text-muted)]">
-          需要定制沟通或企业合作？
-          <a
-            href="/community/roadmap#contact"
-            className="ml-1 font-medium text-brand-700 hover:text-brand-800"
-          >
-            添加微信：gamemasterv1
-          </a>
-        </p>
       </Container>
     </Section>
   );
 }
+
