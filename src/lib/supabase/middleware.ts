@@ -31,12 +31,10 @@ export async function updateSupabaseSession(request: NextRequest) {
     },
   });
 
-  // IMPORTANT: Avoid writing any logic between createServerClient and
-  // supabase.auth.getUser(). A simple mistake can make it very hard to debug
-  // issues with users being logged out.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Keep this call immediately after client creation. It validates the token
+  // and refreshes cookies before Server Components read the request.
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims;
 
   const isProtectedPath = protectedPrefixes.some((prefix) =>
     request.nextUrl.pathname.startsWith(prefix)

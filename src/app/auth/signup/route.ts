@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient, flushCookies } from "@/lib/supabase/server";
+import type { NextRequest } from "next/server";
+import { createRouteHandlerSupabaseClient } from "@/lib/supabase/route";
 import {
   getRequestOrigin,
   safeNextPath,
@@ -7,12 +8,13 @@ import {
   withAuthMessage,
 } from "@/lib/supabase/auth-form";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
   const next = safeNextPath(formData.get("next"));
-  const supabase = await createServerSupabaseClient();
+  const { supabase, applyAuthCookies } =
+    createRouteHandlerSupabaseClient(request);
   const origin = getRequestOrigin(request);
 
   const { data, error } = await supabase.auth.signUp({
@@ -22,9 +24,6 @@ export async function POST(request: Request) {
       emailRedirectTo: `${origin}/auth/confirm?next=${encodeURIComponent(next)}`,
     },
   });
-
-  // 等待 auth cookies 写入完成，否则 redirect 响应中不会带 Set-Cookie
-  await flushCookies();
 
   let destination: string;
   if (error) {
@@ -43,5 +42,7 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.redirect(new URL(destination, origin), 303);
+  return applyAuthCookies(
+    NextResponse.redirect(new URL(destination, origin), 303)
+  );
 }

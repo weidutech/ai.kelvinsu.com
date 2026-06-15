@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient, flushCookies } from "@/lib/supabase/server";
+import type { NextRequest } from "next/server";
+import { createRouteHandlerSupabaseClient } from "@/lib/supabase/route";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { origin } = new URL(request.url);
-  const supabase = await createServerSupabaseClient();
+  const { supabase, applyAuthCookies } =
+    createRouteHandlerSupabaseClient(request);
   await supabase.auth.signOut();
 
-  // 等待 auth cookies 清除完成
-  await flushCookies();
-
-  return NextResponse.redirect(
-    new URL("/login?message=你已经安全退出。", origin)
+  return applyAuthCookies(
+    NextResponse.redirect(
+      new URL("/login?message=你已经安全退出。", origin)
+    )
   );
 }
