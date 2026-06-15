@@ -4,11 +4,14 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import matter from "gray-matter";
 import { Callout } from "@/components/ui/Callout";
+import { requireUser } from "@/lib/supabase/require-user";
 
 // Add any custom components you want to use in MDX here
 const components = {
   Callout,
 };
+
+export const dynamic = "force-dynamic";
 
 export default async function DocPage({
   params,
@@ -16,6 +19,7 @@ export default async function DocPage({
   params: Promise<{ slug: string[] }>;
 }) {
   const { slug } = await params;
+  await requireUser(`/docs/${slug.join("/")}`);
   const filePath = path.join(process.cwd(), "src/content/docs", ...slug) + ".mdx";
 
   let fileContent;

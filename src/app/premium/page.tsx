@@ -2,11 +2,14 @@ import { Container, Section } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { CheckCircle2, Crown, Zap, MessageCircle, LockOpen, Sparkles, Code2 } from "lucide-react";
 import { WechatDialog } from "@/components/ui/WechatDialog";
+import { requireUser } from "@/lib/supabase/require-user";
 
 export const metadata = {
   title: "VIP 高阶会员",
   description: "解锁全部 16+ 商业级 AI 实战案例、源码及专属陪伴圈。",
 };
+
+export const dynamic = "force-dynamic";
 
 const features = [
   {
@@ -46,7 +49,9 @@ const faqs = [
   },
 ];
 
-export default function PremiumPage() {
+export default async function PremiumPage() {
+  await requireUser("/premium");
+
   return (
     <div className="bg-slate-50 min-h-screen pb-24">
       {/* Hero Section */}

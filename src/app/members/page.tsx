@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/supabase/require-user";
 
 type MemberProfile = {
   email: string;
@@ -18,11 +18,10 @@ export const metadata = {
   title: "会员区",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function MembersPage() {
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, user } = await requireUser("/members");
 
   const [{ data: profile, error: profileError }, { data: entitlements, error: entitlementsError }] =
     await Promise.all([

@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   },
   description:
     "Kelvin AI Guide 是面向中文创作者与开发者的 AI 实战指南，系统整理 Codex、CLI、IDE、工作流、自动化与真实案例。",
-  metadataBase: new URL("https://ai.kelvinsu.com"),
-  authors: [{ name: "kelvinsu", url: "https://ai.kelvinsu.com" }],
+  metadataBase: new URL("https://ai.kelvinsu.tech"),
+  authors: [{ name: "kelvinsu", url: "https://ai.kelvinsu.tech" }],
   keywords: [
     "Kelvin AI Guide",
     "AI 教程",
