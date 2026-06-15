@@ -31,9 +31,15 @@ export function Sidebar() {
   );
 }
 
-function SidebarItem({ item, pathname }: { item: any; pathname: string }) {
+type SidebarItemType = {
+  text: string;
+  href?: string;
+  children?: SidebarItemType[];
+};
+
+function SidebarItem({ item, pathname }: { item: SidebarItemType; pathname: string }) {
   const hasChildren = item.children && item.children.length > 0;
-  const isActive = item.href === pathname || (hasChildren && item.children.some((c: any) => c.href === pathname));
+  const isActive = item.href === pathname || (hasChildren && item.children!.some((c: SidebarItemType) => c.href === pathname));
   const [isOpen, setIsOpen] = useState(isActive);
 
   if (hasChildren) {
@@ -51,10 +57,10 @@ function SidebarItem({ item, pathname }: { item: any; pathname: string }) {
         </button>
         {isOpen && (
           <ul className="mt-1 ml-4 border-l border-slate-100 space-y-1">
-            {item.children.map((child: any) => (
+            {item.children!.map((child: SidebarItemType) => (
               <li key={child.href}>
                 <Link
-                  href={child.href}
+                  href={child.href as string}
                   className={cn(
                     "block px-3 py-1.5 text-sm rounded-md transition-colors",
                     pathname === child.href
@@ -75,7 +81,7 @@ function SidebarItem({ item, pathname }: { item: any; pathname: string }) {
   return (
     <li>
       <Link
-        href={item.href}
+        href={item.href as string}
         className={cn(
           "block px-2 py-1.5 text-sm font-medium rounded-md transition-colors",
           pathname === item.href
