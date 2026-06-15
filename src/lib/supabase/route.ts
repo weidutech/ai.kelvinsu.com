@@ -21,6 +21,14 @@ export function createRouteHandlerSupabaseClient(request: NextRequest) {
     Object.entries(authCacheHeaders)
   );
 
+  // createServerClient 的 onAuthStateChange 回调是异步触发的，
+  // signInWithPassword / signUp 等 auth 方法 resolve 时 setAll 可能还没被调用。
+  // 用 Promise 等待 setAll 完成后再构建响应，确保 cookie 写入 Set-Cookie 头。
+  let resolveSetAll: (() => void) | null = null;
+  const setAllCalled = new Promise<void>((resolve) => {
+    resolveSetAll = resolve;
+  });
+
   const supabase = createServerClient(url, publishableKey, {
     cookies: {
       getAll() {
@@ -33,24 +41,25 @@ export function createRouteHandlerSupabaseClient(request: NextRequest) {
         Object.entries(headers).forEach(([key, value]) => {
           pendingHeaders.set(key, value);
         });
+        resolveSetAll?.();
       },
     },
   });
 
-  function applyAuthCookies(response: NextResponse) {
-    const written: string[] = [];
+  /**
+   * 等待 onAuthStateChange 的 setAll 回调完成，
+   * 然后将收集到的 cookie 写入响应的 Set-Cookie 头。
+   * 超时 5 秒后放弃等待，避免 serverless 函数挂起。
+   */
+  async function applyAuthCookies(response: NextResponse) {
+    await Promise.race([
+      setAllCalled,
+      new Promise<void>((r) => setTimeout(r, 5000)),
+    ]);
+
     pendingCookies.forEach(({ name, value, options }) => {
       response.cookies.set(name, value, options);
-      // 临时诊断：记录每个 cookie 的 name + options，方便排查 Vercel 登录态丢失
-      written.push(
-        `${name}{path:${options?.path ?? "?"},domain:${(options as Record<string, unknown> | undefined)?.domain ?? "host"},sameSite:${(options as Record<string, unknown> | undefined)?.sameSite ?? "?"},secure:${(options as Record<string, unknown> | undefined)?.secure ?? "?"},len:${value.length}}`
-      );
     });
-    if (written.length > 0) {
-      response.headers.set("X-Debug-Auth-Cookies", written.join(" | "));
-    } else {
-      response.headers.set("X-Debug-Auth-Cookies", "NONE(supabase did not set any cookie)");
-    }
     pendingHeaders.forEach((value, key) => {
       response.headers.set(key, value);
     });
