@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { signInAction } from "@/app/auth-actions";
-import { AuthSubmitButton } from "@/components/auth/AuthSubmitButton";
+import { AuthForm } from "@/components/auth/AuthForm";
 
 export const metadata = {
   title: "登录",
@@ -40,7 +39,11 @@ export default async function LoginPage({
           </div>
         ) : null}
 
-        <form action={signInAction} className="space-y-4">
+        <AuthForm
+          action="/auth/login"
+          idleLabel="登录"
+          pendingLabel="正在登录，请稍等..."
+        >
           <input type="hidden" name="next" value={next || "/members"} />
 
           <label className="block">
@@ -67,12 +70,10 @@ export default async function LoginPage({
             />
           </label>
 
-          <AuthSubmitButton idleLabel="登录" pendingLabel="正在登录，请稍等..." />
-
           <p className="text-xs leading-5 text-slate-400">
             点击后如果需要 1 到 3 秒，请先别重复点击，我们正在校验登录状态。
           </p>
-        </form>
+        </AuthForm>
 
         <p className="mt-6 text-sm text-slate-500">
           还没有账号？

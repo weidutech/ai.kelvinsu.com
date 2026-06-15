@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { signUpAction } from "@/app/auth-actions";
-import { AuthSubmitButton } from "@/components/auth/AuthSubmitButton";
+import { AuthForm } from "@/components/auth/AuthForm";
 
 export const metadata = {
   title: "注册",
@@ -34,7 +33,11 @@ export default async function SignupPage({
           </div>
         ) : null}
 
-        <form action={signUpAction} className="space-y-4">
+        <AuthForm
+          action="/auth/signup"
+          idleLabel="注册"
+          pendingLabel="正在创建账号，请稍等..."
+        >
           <input type="hidden" name="next" value={next || "/members"} />
 
           <label className="block">
@@ -62,12 +65,10 @@ export default async function SignupPage({
             />
           </label>
 
-          <AuthSubmitButton idleLabel="注册" pendingLabel="正在创建账号，请稍等..." />
-
           <p className="text-xs leading-5 text-slate-400">
             注册时需要同时创建账号并请求确认邮件，通常会慢 1 到 3 秒，请不要连续重复点击。
           </p>
-        </form>
+        </AuthForm>
 
         <p className="mt-6 text-sm text-slate-500">
           已经有账号？
