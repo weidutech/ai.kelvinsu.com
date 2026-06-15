@@ -1,14 +1,14 @@
-"use server";
-
-import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { createServerSupabaseClient, flushCookies } from "@/lib/supabase/server";
 import {
+  getRequestOrigin,
   safeNextPath,
   translateAuthError,
   withAuthMessage,
 } from "@/lib/supabase/auth-form";
 
-export async function loginAction(formData: FormData) {
+export async function POST(request: Request) {
+  const formData = await request.formData();
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
   const next = safeNextPath(formData.get("next"));
@@ -26,5 +26,8 @@ export async function loginAction(formData: FormData) {
     ? withAuthMessage("/login", "error", translateAuthError(error.message))
     : next;
 
-  redirect(destination);
+  return NextResponse.redirect(
+    new URL(destination, getRequestOrigin(request)),
+    303
+  );
 }

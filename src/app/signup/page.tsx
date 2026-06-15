@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { AuthForm } from "@/components/auth/AuthForm";
-import { signupAction } from "@/app/auth/signup/action";
 
 export const metadata = {
   title: "注册",
@@ -35,7 +34,7 @@ export default async function SignupPage({
         ) : null}
 
         <AuthForm
-          action={signupAction}
+          action="/auth/signup"
           idleLabel="注册"
           pendingLabel="正在创建账号，请稍等..."
         >

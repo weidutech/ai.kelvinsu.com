@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { AuthForm } from "@/components/auth/AuthForm";
-import { loginAction } from "@/app/auth/login/action";
 
 export const metadata = {
   title: "登录",
@@ -41,7 +40,7 @@ export default async function LoginPage({
         ) : null}
 
         <AuthForm
-          action={loginAction}
+          action="/auth/login"
           idleLabel="登录"
           pendingLabel="正在登录，请稍等..."
         >

@@ -1,20 +1,19 @@
-"use server";
-
-import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { createServerSupabaseClient, flushCookies } from "@/lib/supabase/server";
-import { getSiteUrl } from "@/lib/supabase/env";
 import {
+  getRequestOrigin,
   safeNextPath,
   translateAuthError,
   withAuthMessage,
 } from "@/lib/supabase/auth-form";
 
-export async function signupAction(formData: FormData) {
+export async function POST(request: Request) {
+  const formData = await request.formData();
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
   const next = safeNextPath(formData.get("next"));
   const supabase = await createServerSupabaseClient();
-  const origin = getSiteUrl();
+  const origin = getRequestOrigin(request);
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -24,7 +23,7 @@ export async function signupAction(formData: FormData) {
     },
   });
 
-  // 等待 auth cookies 写入完成（注册自动确认时需要）
+  // 等待 auth cookies 写入完成，否则 redirect 响应中不会带 Set-Cookie
   await flushCookies();
 
   let destination: string;
@@ -44,5 +43,5 @@ export async function signupAction(formData: FormData) {
     );
   }
 
-  redirect(destination);
+  return NextResponse.redirect(new URL(destination, origin), 303);
 }
