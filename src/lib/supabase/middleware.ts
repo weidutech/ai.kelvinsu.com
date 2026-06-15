@@ -31,10 +31,12 @@ export async function updateSupabaseSession(request: NextRequest) {
     },
   });
 
-  // Keep this call immediately after client creation. It validates the token
-  // and refreshes cookies before Server Components read the request.
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
+  // Keep this call immediately after client creation. It reads the session
+  // from cookies and refreshes the token if expired before Server Components
+  // read the request. getSession() only makes a network call when the token
+  // is actually expired -- right after login it returns immediately from cookies.
+  const { data } = await supabase.auth.getSession();
+  const user = data?.session?.user ?? null;
 
   const isProtectedPath = protectedPrefixes.some((prefix) =>
     request.nextUrl.pathname.startsWith(prefix)

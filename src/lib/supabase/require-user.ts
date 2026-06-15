@@ -4,23 +4,17 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 export async function requireUser(nextPath: string) {
   const supabase = await createServerSupabaseClient();
 
-  // 用 getClaims() 代替 getUser()：
-  // - getClaims() 只在本地解码 JWT，不需要网络请求
-  // - getUser() 会请求 Supabase Auth API，在 serverless 环境下可能超时或失败
-  // - 中间件已经负责了 token 刷新，Server Component 只需验证 JWT 有效性
-  const { data } = await supabase.auth.getClaims();
-  const claims = data?.claims;
+  // 用 getSession() 代替 getClaims() / getUser()：
+  // - getSession() 从 cookie 读取 session，仅在 token 过期时才发起网络刷新
+  // - getClaims() 会尝试获取 JWK 验签，在 serverless 环境下容易超时
+  // - getUser() 每次都请求 Supabase Auth API，在 serverless 环境下同样不可靠
+  // - 中间件已经负责了 token 刷新，Server Component 只需读取 cookie 中的 session
+  const { data } = await supabase.auth.getSession();
+  const user = data?.session?.user ?? null;
 
-  if (!claims) {
+  if (!user) {
     redirect(`/login?next=${encodeURIComponent(nextPath)}`);
   }
-
-  // 将 JWT claims 映射为兼容 User 对象的结构，
-  // 确保 user.id / user.email 等调用方不需要改动
-  const user = {
-    id: claims!.sub,
-    email: (claims as Record<string, unknown>).email as string | undefined,
-  };
 
   return { supabase, user };
 }
