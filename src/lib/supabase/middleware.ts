@@ -31,17 +31,18 @@ export async function updateSupabaseSession(request: NextRequest) {
     },
   });
 
-  // Server Components cannot persist refreshed tokens themselves.
-  await supabase.auth.getClaims();
+  // IMPORTANT: Avoid writing any logic between createServerClient and
+  // supabase.auth.getUser(). A simple mistake can make it very hard to debug
+  // issues with users being logged out.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const hasAuthCookie = request.cookies
-    .getAll()
-    .some(({ name }) => name.startsWith("sb-") && name.includes("-auth-token"));
   const isProtectedPath = protectedPrefixes.some((prefix) =>
     request.nextUrl.pathname.startsWith(prefix)
   );
 
-  if (hasAuthCookie || isProtectedPath) {
+  if (user || isProtectedPath) {
     response.headers.set("Cache-Control", "private, no-store");
     response.headers.set("Pragma", "no-cache");
     response.headers.set("Expires", "0");
