@@ -53,6 +53,8 @@ Thumbs.db
 # deploy
 .vercel
 .edgeone/.env
+.edgeone/assets/
+.edgeone/cloud-functions/
 
 # misc
 .claudian/

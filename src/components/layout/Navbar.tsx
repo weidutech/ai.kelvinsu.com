@@ -5,17 +5,19 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Menu, X, ArrowRight } from "lucide-react";
-import { WechatDialog } from "@/components/ui/WechatDialog";
+
+type NavbarUser = {
+  email: string | null;
+} | null;
 
 const navItems = [
   { name: "首页", href: "/" },
   { name: "免费知识库", href: "/docs/guide/00-overview" },
   { name: "VIP 会员", href: "/premium" },
-  { name: "1V1 咨询", href: "/consulting" },
-  { name: "关于我", href: "/about" },
+  { name: "会员区", href: "/members" },
 ];
 
-export function Navbar() {
+export function Navbar({ user }: { user: NavbarUser }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -77,14 +79,38 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-5">
-            <WechatDialog>
-              <div 
-                className="hidden sm:flex items-center gap-2 text-[15px] font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-md shadow-slate-900/10 px-6 py-3 rounded-full transition-all hover:shadow-lg hover:-translate-y-0.5"
-              >
-                加入会员
-                <ArrowRight className="w-4 h-4 text-slate-300" />
+            {user ? (
+              <div className="hidden sm:flex items-center gap-3">
+                <Link
+                  href="/members"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm"
+                >
+                  <span className="max-w-[180px] truncate">{user.email || "已登录"}</span>
+                </Link>
+                <Link
+                  href="/auth/signout"
+                  className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-3 text-[15px] font-bold text-white transition hover:bg-slate-800"
+                >
+                  退出
+                </Link>
               </div>
-            </WechatDialog>
+            ) : (
+              <div className="hidden sm:flex items-center gap-3">
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-[15px] font-bold text-slate-700 shadow-sm transition hover:border-slate-300"
+                >
+                  登录
+                </Link>
+                <Link
+                  href="/signup"
+                  className="inline-flex items-center gap-2 text-[15px] font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-md shadow-slate-900/10 px-6 py-3 rounded-full transition-all hover:shadow-lg hover:-translate-y-0.5"
+                >
+                  注册
+                  <ArrowRight className="w-4 h-4 text-slate-300" />
+                </Link>
+              </div>
+            )}
             
             <button 
               className="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors bg-white rounded-full border border-slate-200 shadow-sm"
@@ -113,14 +139,38 @@ export function Navbar() {
               </Link>
             ))}
             <div className="mt-8">
-              <WechatDialog>
-                <div 
-                  className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-slate-900 text-white font-bold text-lg shadow-xl shadow-slate-900/10"
-                >
-                  加入会员
-                  <ArrowRight className="w-5 h-5" />
+              {user ? (
+                <div className="space-y-3">
+                  <Link
+                    href="/members"
+                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl border border-slate-200 bg-white text-slate-900 font-bold text-lg shadow-sm"
+                  >
+                    {user.email || "进入会员区"}
+                  </Link>
+                  <Link
+                    href="/auth/signout"
+                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-slate-900 text-white font-bold text-lg shadow-xl shadow-slate-900/10"
+                  >
+                    退出登录
+                  </Link>
                 </div>
-              </WechatDialog>
+              ) : (
+                <div className="space-y-3">
+                  <Link
+                    href="/login"
+                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl border border-slate-200 bg-white text-slate-900 font-bold text-lg shadow-sm"
+                  >
+                    登录
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-slate-900 text-white font-bold text-lg shadow-xl shadow-slate-900/10"
+                  >
+                    注册
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

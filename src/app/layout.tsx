@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
+import { NavbarServer } from "@/components/layout/NavbarServer";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     "AI Agent",
     "实战指南",
   ],
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -31,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body className="min-h-screen antialiased flex flex-col bg-slate-50 text-slate-900 selection:bg-brand-500/30">
-        <Navbar />
+        <NavbarServer />
         <main className="flex-grow pt-[88px] relative z-10">
           {children}
         </main>
