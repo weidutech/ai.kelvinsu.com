@@ -37,6 +37,10 @@
   "exclude": [
     "node_modules",
     "legacy",
-    ".next"
+    ".next",
+    "cloud-functions",
+    "node-functions",
+    "edge-functions",
+    "functions"
   ]
 }
