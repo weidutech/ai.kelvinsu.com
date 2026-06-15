@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServerSupabaseClient, flushCookies } from "@/lib/supabase/server";
 import { getSiteUrl } from "@/lib/supabase/env";
 import {
   safeNextPath,
@@ -23,6 +23,9 @@ export async function signupAction(formData: FormData) {
       emailRedirectTo: `${origin}/auth/confirm?next=${encodeURIComponent(next)}`,
     },
   });
+
+  // 等待 auth cookies 写入完成（注册自动确认时需要）
+  await flushCookies();
 
   let destination: string;
   if (error) {

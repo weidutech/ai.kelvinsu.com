@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServerSupabaseClient, flushCookies } from "@/lib/supabase/server";
 import {
   safeNextPath,
   translateAuthError,
@@ -18,6 +18,9 @@ export async function loginAction(formData: FormData) {
     email,
     password,
   });
+
+  // 等待 auth cookies 写入完成，否则 redirect 响应中不会带 Set-Cookie
+  await flushCookies();
 
   const destination = error
     ? withAuthMessage("/login", "error", translateAuthError(error.message))
