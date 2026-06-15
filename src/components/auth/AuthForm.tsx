@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 
 export function AuthForm({
   action,
@@ -8,19 +8,35 @@ export function AuthForm({
   pendingLabel,
   children,
 }: {
-  action: string;
+  action: string | ((formData: FormData) => Promise<void>);
   idleLabel: string;
   pendingLabel: string;
   children: ReactNode;
 }) {
   const [pending, setPending] = useState(false);
 
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    if (typeof action === "function") {
+      e.preventDefault();
+      setPending(true);
+      try {
+        const formData = new FormData(e.currentTarget);
+        await action(formData);
+        // Server Action 调用 redirect() 时会自动导航，无需手动处理
+      } catch {
+        setPending(false);
+      }
+    } else {
+      setPending(true);
+    }
+  }
+
   return (
     <form
-      action={action}
+      action={typeof action === "string" ? action : undefined}
       method="post"
       className="space-y-4"
-      onSubmit={() => setPending(true)}
+      onSubmit={handleSubmit}
     >
       {children}
       <button

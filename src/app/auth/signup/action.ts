@@ -1,19 +1,20 @@
-import { NextResponse } from "next/server";
+"use server";
+
+import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getSiteUrl } from "@/lib/supabase/env";
 import {
-  getRequestOrigin,
   safeNextPath,
   translateAuthError,
   withAuthMessage,
 } from "@/lib/supabase/auth-form";
 
-export async function POST(request: Request) {
-  const formData = await request.formData();
+export async function signupAction(formData: FormData) {
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
   const next = safeNextPath(formData.get("next"));
   const supabase = await createServerSupabaseClient();
-  const origin = getRequestOrigin(request);
+  const origin = getSiteUrl();
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -40,5 +41,5 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.redirect(new URL(destination, origin), 303);
+  redirect(destination);
 }

@@ -11,10 +11,16 @@ export async function GET(request: Request) {
     const supabase = await createServerSupabaseClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
+    // Give the async onAuthStateChange callback time to persist cookies
+    // before the redirect response is committed.
+    await new Promise((r) => setTimeout(r, 300));
+
     if (!error) {
       return NextResponse.redirect(redirectTo);
     }
   }
 
-  return NextResponse.redirect(new URL("/login?error=邮箱确认失败，请重新尝试。", origin));
+  return NextResponse.redirect(
+    new URL("/login?error=邮箱确认失败，请重新尝试。", origin)
+  );
 }
