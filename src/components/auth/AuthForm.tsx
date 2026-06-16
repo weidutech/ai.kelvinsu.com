@@ -1,19 +1,6 @@
 "use client";
 
 import { useState, type FormEvent, type ReactNode } from "react";
-import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
-
-function safeNextPath(value: FormDataEntryValue | null) {
-  if (
-    typeof value === "string" &&
-    value.startsWith("/") &&
-    !value.startsWith("//")
-  ) {
-    return value;
-  }
-
-  return "/members";
-}
 
 function withAuthMessage(
   pathname: string,
@@ -57,6 +44,23 @@ function translateAuthError(message: string) {
   return message;
 }
 
+function fallbackErrorPath(action: string, message: string) {
+  const pathname = action === "/auth/signup" ? "/signup" : "/login";
+  return withAuthMessage(pathname, "error", message);
+}
+
+function safeRedirectPath(value: unknown, fallback = "/members") {
+  if (
+    typeof value === "string" &&
+    value.startsWith("/") &&
+    !value.startsWith("//")
+  ) {
+    return value;
+  }
+
+  return fallback;
+}
+
 export function AuthForm({
   action,
   idleLabel,
@@ -83,58 +87,45 @@ export function AuthForm({
         return;
       }
 
-      const email = String(formData.get("email") || "").trim();
-      const password = String(formData.get("password") || "");
-      const next = safeNextPath(formData.get("next"));
-      const supabase = createBrowserSupabaseClient();
-
-      if (action === "/auth/login") {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+      if (action === "/auth/login" || action === "/auth/signup") {
+        const resp = await fetch(action, {
+          method: "POST",
+          body: formData,
+          credentials: "same-origin",
+          headers: {
+            Accept: "application/json",
+          },
         });
 
+        const contentType = resp.headers.get("content-type") || "";
+        const payload = contentType.includes("application/json")
+          ? ((await resp.json()) as { redirect?: unknown })
+          : {};
+
         window.location.assign(
-          error
-            ? withAuthMessage("/login", "error", translateAuthError(error.message))
-            : next
+          safeRedirectPath(
+            payload.redirect,
+            fallbackErrorPath(
+              action,
+              resp.ok
+                ? "登录状态返回异常，请刷新后重试。"
+                : "登录请求失败，请稍后再试。"
+            )
+          )
         );
         return;
       }
 
-      if (action === "/auth/signup") {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/auth/confirm?next=${encodeURIComponent(next)}`,
-          },
-        });
-
-        let destination: string;
-        if (error) {
-          destination = withAuthMessage(
-            "/signup",
-            "error",
-            translateAuthError(error.message)
-          );
-        } else if (data.session) {
-          destination = next;
-        } else {
-          destination = withAuthMessage(
-            "/login",
-            "message",
-            "注册成功，请先去邮箱确认登录链接。确认完成后再回来登录。"
-          );
-        }
-
-        window.location.assign(destination);
-        return;
-      }
-
       window.location.reload();
-    } catch {
-      setPending(false);
+    } catch (error) {
+      const message =
+        error instanceof Error ? translateAuthError(error.message) : "请求失败。";
+      const fallback =
+        typeof action === "string"
+          ? fallbackErrorPath(action, message)
+          : withAuthMessage("/login", "error", message);
+
+      window.location.assign(fallback);
     }
   }
 

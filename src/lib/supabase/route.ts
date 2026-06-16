@@ -51,11 +51,18 @@ export function createRouteHandlerSupabaseClient(request: NextRequest) {
    * 然后将收集到的 cookie 写入响应的 Set-Cookie 头。
    * 超时 5 秒后放弃等待，避免 serverless 函数挂起。
    */
-  async function applyAuthCookies(response: NextResponse) {
-    await Promise.race([
-      setAllCalled,
-      new Promise<void>((r) => setTimeout(r, 5000)),
-    ]);
+  async function applyAuthCookies(
+    response: NextResponse,
+    options: { waitForCookies?: boolean } = {}
+  ) {
+    const { waitForCookies = true } = options;
+
+    if (waitForCookies) {
+      await Promise.race([
+        setAllCalled,
+        new Promise<void>((r) => setTimeout(r, 5000)),
+      ]);
+    }
 
     pendingCookies.forEach(({ name, value, options }) => {
       response.cookies.set(name, value, options);
@@ -66,5 +73,9 @@ export function createRouteHandlerSupabaseClient(request: NextRequest) {
     return response;
   }
 
-  return { supabase, applyAuthCookies };
+  function pendingAuthCookieCount() {
+    return pendingCookies.size;
+  }
+
+  return { supabase, applyAuthCookies, pendingAuthCookieCount };
 }
