@@ -1,12 +1,9 @@
 "use client";
 
 import { useState, type FormEvent, type ReactNode } from "react";
+import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 
-type AuthResponse = {
-  redirect?: string;
-};
-
-function safeRedirectTarget(value: unknown) {
+function safeNextPath(value: FormDataEntryValue | null) {
   if (
     typeof value === "string" &&
     value.startsWith("/") &&
@@ -16,6 +13,48 @@ function safeRedirectTarget(value: unknown) {
   }
 
   return "/members";
+}
+
+function withAuthMessage(
+  pathname: string,
+  key: "error" | "message",
+  value: string
+) {
+  const params = new URLSearchParams({ [key]: value });
+  return `${pathname}?${params.toString()}`;
+}
+
+function translateAuthError(message: string) {
+  const waitMatch = message.match(/after\s+(\d+)\s+seconds?/i);
+  if (waitMatch) {
+    return `请求太频繁了，请在 ${waitMatch[1]} 秒后再试。`;
+  }
+
+  if (/rate\s*limit/i.test(message) || /email rate limit/i.test(message)) {
+    return "邮件发送过于频繁，请稍等几分钟后再试，或换一个邮箱。";
+  }
+
+  if (message === "Invalid login credentials") {
+    return "邮箱或密码不正确，请重新检查。";
+  }
+
+  if (message === "Email not confirmed") {
+    return "这个邮箱还没有完成确认，请先去邮箱点击确认链接。";
+  }
+
+  if (message === "User already registered") {
+    return "这个邮箱已经注册过了，你可以直接去登录。";
+  }
+
+  if (message === "Signup requires a valid password") {
+    return "请设置一个有效的密码后再试。";
+  }
+
+  if (message.toLowerCase().includes("password")) {
+    return "密码暂时不符合要求，请换一个至少 6 位的密码。";
+  }
+
+  return message;
 }
 
 export function AuthForm({
@@ -44,21 +83,56 @@ export function AuthForm({
         return;
       }
 
-      const resp = await fetch(action, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-        credentials: "same-origin",
-      });
+      const email = String(formData.get("email") || "").trim();
+      const password = String(formData.get("password") || "");
+      const next = safeNextPath(formData.get("next"));
+      const supabase = createBrowserSupabaseClient();
 
-      if (resp.ok) {
-        const payload = (await resp.json()) as AuthResponse;
-        window.location.href = safeRedirectTarget(payload.redirect);
-      } else {
-        window.location.reload();
+      if (action === "/auth/login") {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        window.location.assign(
+          error
+            ? withAuthMessage("/login", "error", translateAuthError(error.message))
+            : next
+        );
+        return;
       }
+
+      if (action === "/auth/signup") {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/confirm?next=${encodeURIComponent(next)}`,
+          },
+        });
+
+        let destination: string;
+        if (error) {
+          destination = withAuthMessage(
+            "/signup",
+            "error",
+            translateAuthError(error.message)
+          );
+        } else if (data.session) {
+          destination = next;
+        } else {
+          destination = withAuthMessage(
+            "/login",
+            "message",
+            "注册成功，请先去邮箱确认登录链接。确认完成后再回来登录。"
+          );
+        }
+
+        window.location.assign(destination);
+        return;
+      }
+
+      window.location.reload();
     } catch {
       setPending(false);
     }
