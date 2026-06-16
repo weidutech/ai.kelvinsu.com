@@ -2,6 +2,22 @@
 
 import { useState, type FormEvent, type ReactNode } from "react";
 
+type AuthResponse = {
+  redirect?: string;
+};
+
+function safeRedirectTarget(value: unknown) {
+  if (
+    typeof value === "string" &&
+    value.startsWith("/") &&
+    !value.startsWith("//")
+  ) {
+    return value;
+  }
+
+  return "/members";
+}
+
 export function AuthForm({
   action,
   idleLabel,
@@ -28,23 +44,19 @@ export function AuthForm({
         return;
       }
 
-      // 用 fetch 代替原生表单提交：
-      // 原生 form POST + 303 redirect 时，部分浏览器不持久化 Set-Cookie，
-      // 导致登录后刷新页面被踢回登录页。
-      // fetch + redirect:'follow' 会在内部跟随重定向并存储 Set-Cookie，
-      // 然后用 window.location 导航到目标页，确保 cookie 在导航前已写入。
       const resp = await fetch(action, {
         method: "POST",
         body: formData,
-        redirect: "follow",
+        headers: {
+          Accept: "application/json",
+        },
         credentials: "same-origin",
       });
 
-      // resp.url 是最终落地页（跟随 303 后的地址）
-      if (resp.redirected && resp.url) {
-        window.location.href = resp.url;
+      if (resp.ok) {
+        const payload = (await resp.json()) as AuthResponse;
+        window.location.href = safeRedirectTarget(payload.redirect);
       } else {
-        // 未发生重定向（异常情况），刷新当前页
         window.location.reload();
       }
     } catch {

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createRouteHandlerSupabaseClient } from "@/lib/supabase/route";
 import {
-  getRequestOrigin,
   safeNextPath,
   translateAuthError,
   withAuthMessage,
@@ -26,9 +25,6 @@ export async function POST(request: NextRequest) {
     : next;
 
   return applyAuthCookies(
-    NextResponse.redirect(
-      new URL(destination, getRequestOrigin(request)),
-      303
-    )
+    NextResponse.json({ redirect: destination }, { status: 200 })
   );
 }

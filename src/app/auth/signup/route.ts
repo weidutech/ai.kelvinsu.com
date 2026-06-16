@@ -43,6 +43,6 @@ export async function POST(request: NextRequest) {
   }
 
   return applyAuthCookies(
-    NextResponse.redirect(new URL(destination, origin), 303)
+    NextResponse.json({ redirect: destination }, { status: 200 })
   );
 }
