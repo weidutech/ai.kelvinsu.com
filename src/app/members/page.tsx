@@ -129,11 +129,6 @@ export default async function MembersPage() {
                   href: "/premium",
                   description: "后续这里可以改造成真正的会员货架和权益说明。",
                 },
-                {
-                  title: "退出登录",
-                  href: "/auth/signout",
-                  description: "随时退出当前账号。",
-                },
               ].map((item) => (
                 <Link
                   key={item.href}
@@ -144,6 +139,17 @@ export default async function MembersPage() {
                   <p className="mt-2 text-sm leading-6 text-slate-500">{item.description}</p>
                 </Link>
               ))}
+              <form action="/auth/signout" method="post">
+                <button
+                  type="submit"
+                  className="h-full w-full rounded-[1.25rem] border border-slate-200 bg-white px-5 py-5 text-left transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                >
+                  <p className="text-base font-bold text-slate-900">退出登录</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    随时退出当前账号。
+                  </p>
+                </button>
+              </form>
             </div>
           </section>
         </div>

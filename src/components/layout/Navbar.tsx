@@ -87,12 +87,14 @@ export function Navbar({ user }: { user: NavbarUser }) {
                 >
                   <span className="max-w-[180px] truncate">{user.email || "已登录"}</span>
                 </Link>
-                <Link
-                  href="/auth/signout"
-                  className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-3 text-[15px] font-bold text-white transition hover:bg-slate-800"
-                >
-                  退出
-                </Link>
+                <form action="/auth/signout" method="post">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-3 text-[15px] font-bold text-white transition hover:bg-slate-800"
+                  >
+                    退出
+                  </button>
+                </form>
               </div>
             ) : (
               <div className="hidden sm:flex items-center gap-3">
@@ -147,12 +149,14 @@ export function Navbar({ user }: { user: NavbarUser }) {
                   >
                     {user.email || "进入会员区"}
                   </Link>
-                  <Link
-                    href="/auth/signout"
-                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-slate-900 text-white font-bold text-lg shadow-xl shadow-slate-900/10"
-                  >
-                    退出登录
-                  </Link>
+                  <form action="/auth/signout" method="post">
+                    <button
+                      type="submit"
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-4 text-lg font-bold text-white shadow-xl shadow-slate-900/10"
+                    >
+                      退出登录
+                    </button>
+                  </form>
                 </div>
               ) : (
                 <div className="space-y-3">
