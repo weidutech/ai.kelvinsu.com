@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Settings, User } from "lucide-react";
 
 type NavbarUser = {
   email: string | null;
@@ -12,9 +12,11 @@ type NavbarUser = {
 
 const navItems = [
   { name: "首页", href: "/" },
+  { name: "关于我", href: "/about" },
   { name: "免费知识库", href: "/docs/guide/00-overview" },
   { name: "VIP 会员", href: "/premium" },
-  { name: "会员区", href: "/members" },
+  { name: "私域社群", href: "/community" },
+  { name: "独立产品", href: "/products" },
 ];
 
 export function Navbar({ user }: { user: NavbarUser }) {
@@ -83,14 +85,15 @@ export function Navbar({ user }: { user: NavbarUser }) {
               <div className="hidden sm:flex items-center gap-3">
                 <Link
                   href="/members"
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm"
+                  className="flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 bg-white text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-sm"
+                  title="会员设置"
                 >
-                  <span className="max-w-[180px] truncate">{user.email || "已登录"}</span>
+                  <Settings className="w-5 h-5" />
                 </Link>
                 <form action="/auth/signout" method="post">
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-3 text-[15px] font-bold text-white transition hover:bg-slate-800"
+                    className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800"
                   >
                     退出
                   </button>

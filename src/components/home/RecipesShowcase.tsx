@@ -1,80 +1,103 @@
 import Link from "next/link";
-import { Badge } from "@/components/ui/Badge";
 import { Container, Section } from "@/components/ui/Container";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Code2, Terminal, Workflow } from "lucide-react";
 
 /**
  * RecipesShowcase —— 精选案例（Premium Bento Grid）
- * - 复杂的网格布局，打破单调
- * - 使用深浅相间的卡片底色与微妙的渐变光晕
- * - 精致的排版层次
+ * 加入了“干货” Mock，展示具体的代码或终端输出，提升专业度和真实感。
  */
 const featuredRecipes = [
   {
-    href: "/docs/recipes/ppt-skill-walkthrough",
-    title: "一句话生成结构化 PPT",
-    description: "调用专用 Skill，将模糊的想法转化为逻辑严密的 Slide Deck。",
-    category: "内容生产",
+    href: "/docs/recipes/prompt-framework-sales",
+    title: "高转化营销文案 Prompt",
+    description: "万能的结构化提示词模板，让 Kimi/Claude 直接吐出带有情绪价值的带货文案。",
+    category: "Prompt 实战",
     span: "lg:col-span-2 lg:row-span-2",
     theme: "dark",
     gradient: "from-slate-900 to-slate-800",
+    mockType: "code",
+    mockContent: `# Role: 顶尖带货博主
+# Context: 需要推销一款人体工学椅
+# Rules:
+1. 使用 PAS 结构 (Problem-Agitation-Solution)
+2. 语言要极具网感，多用 emoji
+3. 结尾必须包含强烈的行动呼吁 (CTA)
+
+# Workflow:
+- 痛点引入：久坐腰酸背痛
+- 情绪放大：去医院理疗不仅贵还耽误时间
+- 给出方案：这款椅子如何从根源解决问题...`,
   },
   {
-    href: "/docs/recipes/playwright-mcp",
-    title: "操控浏览器自动化",
-    description: "让 Codex 像人一样浏览网页、抓取数据并执行截图验证。",
-    category: "自动化",
+    href: "/docs/recipes/coze-auto-researcher",
+    title: "全自动行业研报 Agent",
+    description: "利用 Coze/Dify 搭建的机器人，输入一个关键词，自动搜索网页并生成 5000 字报告。",
+    category: "Agent 工作流",
     span: "lg:col-span-1 lg:row-span-1",
     theme: "light",
     gradient: "from-white to-slate-50",
+    mockType: "terminal",
+    mockContent: `> agent start --task "2026 AI Trends"
+[Action] Web Search: 2026 AI Market Size
+[Info] Extracted data from 12 sources
+[Action] LLM Summarization running...
+[Success] Report saved to /output/report.md`,
   },
   {
-    href: "/docs/recipes/obsidian-codex",
-    title: "深度连接 Obsidian",
-    description: "在本地知识库中实现无缝的 AI 辅助写作与双链引用。",
-    category: "知识管理",
+    href: "/docs/recipes/midjourney-to-xiaohongshu",
+    title: "Midjourney 爆款图文流",
+    description: "一整套从垫图生图、风格统一到批量导出的工作流，专供小红书起号。",
+    category: "多模态创作",
     span: "lg:col-span-1 lg:row-span-1",
     theme: "brand",
     gradient: "from-brand-50 to-white",
+    mockType: "ui",
+    mockContent: "/imagine prompt: A futuristic AI lab, minimal setup, natural lighting, shot on 35mm lens --ar 3:4 --v 6.0",
   },
   {
-    href: "/docs/recipes/github-actions-ci-fix",
-    title: "CI/CD 故障自动修复",
-    description: "实时监控构建失败日志，自动生成修复代码并提交 PR。",
-    category: "DevOps",
+    href: "/docs/recipes/excel-data-analyzer",
+    title: "让大模型帮你处理 Excel",
+    description: "给没技术背景的职场人准备：把杂乱的销售数据丢给 AI，直接要透视表和业务洞察。",
+    category: "AI 办公应用",
     span: "lg:col-span-2 lg:row-span-1",
     theme: "light",
     gradient: "from-white to-slate-50",
+    mockType: "ui",
+    mockContent: "User: 帮我分析 Q3 的利润下滑原因。\n\nAI: 已解析 sales_q3.xlsx。数据显示，8月份由于营销成本增加（+22%）导致净利压缩，建议...",
   },
 ];
 
 export function RecipesShowcase() {
   return (
-    <Section className="bg-slate-50/50 overflow-hidden py-24">
+    <Section className="bg-white overflow-hidden py-32 relative">
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+      
       <Container size="wide">
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-16">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 mb-20 px-4">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-xs font-semibold text-brand-700 uppercase tracking-wider mb-6">
-              Battle-Tested Recipes
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8 shadow-xl shadow-slate-900/10">
+              <span className="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+              Core Arsenal & Source Code
             </div>
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-400">实战场景</span> 深度沉淀
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-slate-900 leading-[1.1]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-brand-500 to-indigo-600">你的弹药库：</span> <br className="hidden md:block" />
+              可复用的底层代码与 Prompt
             </h2>
-            <p className="mt-4 text-lg text-slate-500 font-medium">
-              这些案例不仅仅是教程，更是可以直接复制到你工作流中的“战斗模版”。
+            <p className="mt-8 text-xl text-slate-500 font-medium leading-relaxed">
+              除了视频课程，加入 VIP 你还将获得这些能够直接部署到生产环境的代码片段、自动化脚本和结构化提示词库。
             </p>
           </div>
           <Link
             href="/docs/recipes"
-            className="group inline-flex items-center text-sm font-bold text-slate-600 hover:text-brand-600 transition-colors pb-2"
+            className="group inline-flex items-center text-sm font-black text-slate-400 hover:text-brand-600 transition-all duration-300 pb-2 border-b-2 border-transparent hover:border-brand-500"
           >
-            探索全部 16+ 案例
-            <ArrowUpRight className="ml-1.5 w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            探索代码库
+            <ArrowUpRight className="ml-2 w-5 h-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[220px] gap-6">
-          {featuredRecipes.map((recipe) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[280px] gap-8 px-4">
+          {featuredRecipes.map((recipe, index) => {
             const isDark = recipe.theme === "dark";
             const isBrand = recipe.theme === "brand";
             
@@ -82,52 +105,77 @@ export function RecipesShowcase() {
               <Link
                 key={recipe.href}
                 href={recipe.href}
-                className={`group relative flex flex-col justify-between p-8 rounded-[1.5rem] border transition-all duration-500 hover:-translate-y-1 overflow-hidden ${recipe.span}
-                  ${isDark ? 'border-slate-800 shadow-xl shadow-slate-900/10 hover:shadow-2xl hover:shadow-slate-900/20' : ''}
-                  ${isBrand ? 'border-brand-100 shadow-md shadow-brand-500/5 hover:border-brand-200 hover:shadow-lg hover:shadow-brand-500/10' : ''}
-                  ${recipe.theme === 'light' ? 'border-slate-200/60 shadow-sm hover:border-slate-300 hover:shadow-md' : ''}
+                className={`group relative flex flex-col p-0 rounded-[2.5rem] border transition-all duration-700 hover:-translate-y-3 overflow-hidden ${recipe.span}
+                  ${isDark ? 'bg-slate-900 border-slate-800 shadow-2xl shadow-slate-900/40' : 'bg-[#fcfcfc] border-slate-200/60 shadow-xl shadow-slate-200/20 hover:shadow-glow'}
                 `}
               >
-                {/* 背景渐变 */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${recipe.gradient} -z-10`} />
-                
-                {/* Dark主题特有装饰 */}
-                {isDark && (
-                  <>
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-[60px] pointer-events-none" />
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-                  </>
-                )}
-
-                <div className="relative z-10 flex justify-between items-start">
-                  <div className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold tracking-wider ${
-                    isDark ? 'bg-white/10 text-white border border-white/10' : 
-                    isBrand ? 'bg-white text-brand-600 border border-brand-100 shadow-sm' : 
-                    'bg-slate-100 text-slate-600'
-                  }`}>
-                    {recipe.category}
+                {/* Mock Browser UI Shell (Header) */}
+                <div className={`h-10 border-b flex items-center px-6 gap-2 shrink-0 relative z-20 ${
+                  isDark ? 'bg-slate-800/80 border-slate-700/50 backdrop-blur-md' : 'bg-slate-50/80 border-slate-200 backdrop-blur-md'
+                }`}>
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]"></div>
                   </div>
-                  
-                  {/* 右上角图标 */}
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    isDark ? 'bg-white/10 text-white/50 group-hover:bg-white group-hover:text-slate-900' :
-                    'bg-slate-50 text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600'
+                  <div className={`mx-auto flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase ${
+                    isDark ? 'text-slate-400' : 'text-slate-400'
                   }`}>
-                    <ArrowUpRight className="w-4 h-4" />
+                    {recipe.mockType === 'code' && <Code2 className="w-3.5 h-3.5" />}
+                    {recipe.mockType === 'terminal' && <Terminal className="w-3.5 h-3.5" />}
+                    {recipe.mockType === 'ui' && <Workflow className="w-3.5 h-3.5" />}
+                    {recipe.category}
                   </div>
                 </div>
 
-                <div className="relative z-10 mt-auto pt-6">
-                  <h3 className={`font-bold tracking-tight mb-3 ${
-                    isDark ? 'text-white text-2xl md:text-3xl' : 'text-slate-900 text-xl'
+                <div className="relative flex-1 p-8 flex flex-col justify-end overflow-hidden">
+                  {/* Hover Background Accent */}
+                  <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-700 z-0 ${recipe.gradient}`} />
+                  
+                  {/* --- THE "DRY GOODS" MOCKUP AREA --- */}
+                  <div className={`absolute inset-0 pt-10 px-6 pb-32 overflow-hidden transition-transform duration-700 group-hover:scale-105 z-10 opacity-40 group-hover:opacity-100 ${
+                    isDark ? 'opacity-30' : 'opacity-20'
                   }`}>
-                    {recipe.title}
-                  </h3>
-                  <p className={`font-medium leading-relaxed ${
-                    isDark ? 'text-slate-300 text-base max-w-md' : 'text-slate-500 text-sm'
-                  }`}>
-                    {recipe.description}
-                  </p>
+                    {recipe.mockType === 'code' && (
+                      <pre className={`text-[10px] sm:text-xs font-mono leading-relaxed tracking-tight ${isDark ? 'text-brand-300/80' : 'text-slate-600'}`}>
+                        <code>{recipe.mockContent}</code>
+                      </pre>
+                    )}
+                    {recipe.mockType === 'terminal' && (
+                      <pre className={`text-[10px] sm:text-xs font-mono leading-relaxed ${isDark ? 'text-green-400/80' : 'text-brand-700'}`}>
+                        <code>{recipe.mockContent}</code>
+                      </pre>
+                    )}
+                    {recipe.mockType === 'ui' && (
+                      <div className={`mt-4 p-4 border rounded-xl font-mono text-xs ${isDark ? 'border-brand-500/30 text-brand-300' : 'border-brand-200 bg-white text-brand-700'}`}>
+                        {recipe.mockContent}
+                      </div>
+                    )}
+                    {/* Fade out mask for text */}
+                    <div className={`absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t ${isDark ? 'from-slate-900' : 'from-[#fcfcfc]'} to-transparent z-10`}></div>
+                  </div>
+                  {/* ----------------------------------- */}
+
+                  <div className="relative z-20 mt-auto drop-shadow-md">
+                    <h3 className={`font-black tracking-tighter mb-4 ${
+                      isDark ? 'text-white text-3xl md:text-4xl' : 'text-slate-900 text-2xl'
+                    }`}>
+                      {recipe.title}
+                    </h3>
+                    <p className={`font-semibold leading-relaxed ${
+                      isDark ? 'text-slate-300 text-lg max-w-sm' : 'text-slate-600 text-base'
+                    }`}>
+                      {recipe.description}
+                    </p>
+                  </div>
+                  
+                  {/* Subtle Action Link */}
+                  <div className="mt-8 flex items-center gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 relative z-20">
+                    <span className={`text-[10px] font-black uppercase tracking-widest ${isDark ? 'text-brand-400' : 'text-brand-600'}`}>
+                      Explore Implementation
+                    </span>
+                    <ArrowUpRight className={`w-4 h-4 ${isDark ? 'text-brand-400' : 'text-brand-600'}`} />
+                  </div>
                 </div>
               </Link>
             );
@@ -137,3 +185,4 @@ export function RecipesShowcase() {
     </Section>
   );
 }
+

@@ -1,43 +1,38 @@
 import Link from "next/link";
-import { Section, Container } from "@/components/ui/Container";
-import { Terminal, Code2, Network, ArrowRight } from "lucide-react";
+import { ArrowRight, Blocks, Briefcase, FileStack, Sparkles } from "lucide-react";
 
-const paths = [
+import { Container, Section } from "@/components/ui/Container";
+
+const valueCards = [
   {
-    step: "01",
-    href: "/docs/guide/01-app-installation",
-    title: "个人效能跃迁",
-    description: "掌握 AI 提效核心技巧，快速打造属于自己的数字分身与内容流。",
-    audience: "自媒体 · 创作者 · 独立开发者",
-    icon: Terminal,
-    color: "from-blue-500 to-cyan-400",
-    bgLight: "bg-blue-50/50",
-    textDark: "text-blue-600",
-    glow: "hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+    eyebrow: "入门最快见效",
+    title: "10倍提效：Prompt 高级技巧与日常流",
+    description:
+      "绝大多数人不需要懂代码，只需要会“问问题”。为你整理了应对写邮件、数据分析、总结长文的高转化 Prompt 模板。",
+    bullets: ["万能 Prompt 框架", "日常办公提效模板", "各行业落地场景"],
+    href: "/docs/guide/00-overview",
+    icon: FileStack,
+    tone: "bg-white border-slate-200/70",
   },
   {
-    step: "02",
-    href: "/docs/guide/12-cli-installation",
-    title: "全栈商业闭环",
-    description: "告别技术外包，零基础借助 AI 独立完成后端搭建、前端开发与全自动部署。",
-    audience: "创业者 · 产品经理",
-    icon: Code2,
-    color: "from-brand-500 to-teal-400",
-    bgLight: "bg-brand-50/50",
-    textDark: "text-brand-600",
-    glow: "hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+    eyebrow: "创作者与副业",
+    title: "自媒体变现：多模态创作与自动分发",
+    description:
+      "结合 Midjourney, Kimi, 可灵等国内/外顶级工具，教你如何用 AI 写爆款文案、生成视频，甚至搭建全自动的自媒体矩阵。",
+    bullets: ["爆款文案生成公式", "AI 绘画与视频实战", "小红书/抖音自动化"],
+    href: "/docs/recipes",
+    icon: Sparkles,
+    tone: "bg-slate-900 border-slate-800 text-white",
   },
   {
-    step: "03",
-    href: "/docs/practice/team-playbook",
-    title: "企业级 AI 提效",
-    description: "引入标准化 AI 工作流，沉淀企业专属知识库，实现团队人效的指数级爆发。",
-    audience: "企业高管 · 团队 Leader",
-    icon: Network,
-    color: "from-purple-500 to-indigo-500",
-    bgLight: "bg-purple-50/50",
-    textDark: "text-purple-600",
-    glow: "hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+    eyebrow: "2026 最新热点",
+    title: "让机器打工：自主 Agent 与多工具联动",
+    description:
+      "从“聊天”升级到“做事”。通过 Dify/Coze 搭建能自主收集资料、处理 Excel、多工具协同的数字员工，释放你的双手。",
+    bullets: ["Agent 搭建实战", "API 与工具联动", "企业级工作流部署"],
+    href: "/premium",
+    icon: Blocks,
+    tone: "bg-brand-50/70 border-brand-100",
   },
 ];
 
@@ -45,57 +40,68 @@ export function LearningPaths() {
   return (
     <Section className="bg-white relative z-10 py-24">
       <Container>
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">
-              精准切入，<span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-blue-600">高效变现</span>
-            </h2>
-            <p className="mt-4 text-lg text-slate-500 font-medium">
-              摒弃漫无目的的摸索。根据你的商业背景与核心痛点，选择最能产生杠杆效应的学习路线。
-            </p>
+        <div className="max-w-3xl mb-16">
+          <div className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-brand-700">
+            <Sparkles className="h-3.5 w-3.5" />
+            What You Actually Get
           </div>
+          <h2 className="mt-6 text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+            不是再给你一套空话，
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-blue-600">
+              是给你能直接带走的资产
+            </span>
+          </h2>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 font-medium">
+            来这里，不该只带走一点“灵感”。你应该能带走一套更快上手的工作流、几组能直接复制的案例，以及遇到真实业务时该怎么落地的判断框架。
+          </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3 relative">
-          {paths.map((path) => {
-            const Icon = path.icon;
+        <div className="grid gap-6 lg:grid-cols-3">
+          {valueCards.map((card) => {
+            const Icon = card.icon;
+            const darkCard = card.tone.includes("text-white");
+
             return (
               <Link
-                key={path.step}
-                href={path.href}
-                className={`group relative flex flex-col p-8 rounded-[1.5rem] bg-white border border-slate-200/60 transition-all duration-500 hover:-translate-y-1 hover:border-slate-300 overflow-hidden ${path.glow}`}
+                key={card.title}
+                href={card.href}
+                className={`group relative flex h-full flex-col rounded-[1.75rem] border p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${card.tone}`}
               >
-                {/* 顶部高光线 */}
-                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${path.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                {/* 背景装饰：淡淡的步骤号 */}
-                <div className="absolute top-6 right-6 font-mono text-7xl font-black text-slate-50 -z-0 transition-all duration-500 group-hover:scale-110 group-hover:text-slate-100/50">
-                  {path.step}
+                <div
+                  className={`mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border ${
+                    darkCard
+                      ? "border-white/10 bg-white/5 text-brand-300"
+                      : "border-slate-200 bg-white text-slate-700"
+                  }`}
+                >
+                  <Icon className="h-6 w-6" />
                 </div>
 
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className={`relative w-14 h-14 mb-8 group-hover:scale-110 transition-transform duration-500`}>
-                    <div className={`absolute inset-0 bg-gradient-to-tr ${path.color} rounded-2xl opacity-0 group-hover:opacity-10 blur-md transition-opacity`}></div>
-                    <div className={`relative flex items-center justify-center w-full h-full rounded-2xl ${path.bgLight} border border-slate-100 ${path.textDark}`}>
-                      <Icon className="w-6 h-6" strokeWidth={2} />
-                    </div>
-                  </div>
+                <div className={`text-xs font-bold uppercase tracking-[0.24em] ${darkCard ? "text-brand-300" : "text-slate-400"}`}>
+                  {card.eyebrow}
+                </div>
+                <h3 className={`mt-3 text-2xl font-bold tracking-tight ${darkCard ? "text-white" : "text-slate-900"}`}>
+                  {card.title}
+                </h3>
+                <p className={`mt-4 flex-grow text-sm leading-7 font-medium ${darkCard ? "text-slate-300" : "text-slate-600"}`}>
+                  {card.description}
+                </p>
 
-                  <h3 className="text-xl font-bold text-slate-900 mb-3 tracking-tight">
-                    {path.title}
-                  </h3>
-                  <p className="text-slate-500 leading-relaxed text-[15px] font-medium mb-10 flex-grow">
-                    {path.description}
-                  </p>
-
-                  <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-100">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                      {path.audience}
-                    </span>
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-50 text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600 transition-colors">
-                      <ArrowRight className="w-4 h-4" />
+                <div className={`mt-8 space-y-3 border-t pt-6 ${darkCard ? "border-white/10" : "border-slate-100"}`}>
+                  {card.bullets.map((bullet) => (
+                    <div
+                      key={bullet}
+                      className={`flex items-center gap-3 text-sm font-semibold ${darkCard ? "text-slate-200" : "text-slate-700"}`}
+                    >
+                      <span className={`h-2 w-2 rounded-full ${darkCard ? "bg-brand-400" : "bg-brand-500"}`}></span>
+                      {bullet}
                     </div>
-                  </div>
+                  ))}
+                </div>
+
+                <div className={`mt-8 inline-flex items-center gap-2 text-sm font-bold ${darkCard ? "text-white" : "text-slate-900"}`}>
+                  进去看看具体内容
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
               </Link>
             );

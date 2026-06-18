@@ -1,10 +1,8 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { Navbar } from "@/components/layout/Navbar";
+import { getOptionalServerUserClaims } from "@/lib/supabase/claims";
 
 export async function NavbarServer() {
-  const supabase = await createServerSupabaseClient();
-  const { data } = await supabase.auth.getClaims();
-  const claims = data?.claims ?? null;
+  const claims = await getOptionalServerUserClaims();
 
   return (
     <Navbar

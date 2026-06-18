@@ -1,15 +1,15 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getOptionalServerUserClaims } from "@/lib/supabase/claims";
 
 export async function requireUser(nextPath: string) {
-  const supabase = await createServerSupabaseClient();
-  const { data } = await supabase.auth.getClaims();
-  const claims = data?.claims ?? null;
+  const claims = await getOptionalServerUserClaims();
 
   if (!claims) {
     redirect(`/login?next=${encodeURIComponent(nextPath)}`);
   }
 
+  const supabase = await createServerSupabaseClient();
   const user = {
     id: claims.sub,
     email: claims.email ?? null,
