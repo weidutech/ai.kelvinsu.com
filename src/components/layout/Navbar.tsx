@@ -12,17 +12,26 @@ type NavbarUser = {
 
 const navItems = [
   { name: "首页", href: "/" },
-  { name: "关于我", href: "/about" },
   { name: "免费知识库", href: "/docs/guide/00-overview" },
-  { name: "VIP 会员", href: "/premium" },
+  { name: "付费知识库", href: "/members/paid-knowledge-base" },
   { name: "私域社群", href: "/community" },
   { name: "独立产品", href: "/products" },
+  { name: "关于我", href: "/about" },
 ];
+
+function getUserLabel(email: string | null) {
+  if (!email) {
+    return "已登录会员";
+  }
+
+  return email.split("@")[0] || email;
+}
 
 export function Navbar({ user }: { user: NavbarUser }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const userLabel = getUserLabel(user?.email ?? null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,8 +62,8 @@ export function Navbar({ user }: { user: NavbarUser }) {
               <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform ring-2 ring-white border border-slate-100">
                 <img src="/images/avatar.jpg" alt="Kelvin's Avatar" className="w-full h-full object-cover" />
               </div>
-              <span className="font-bold text-xl tracking-tight text-slate-900">
-                Kelvin<span className="text-slate-500 font-medium ml-[2px]">Guide</span>
+              <span className="font-bold text-xl tracking-tight text-slate-900 flex items-center">
+                Kelvin<span className="text-slate-500 font-bold ml-2 text-sm hidden sm:inline-block bg-slate-100 px-2 py-0.5 rounded-md">大厂 AI 研究员</span>
               </span>
             </Link>
 
@@ -83,6 +92,23 @@ export function Navbar({ user }: { user: NavbarUser }) {
           <div className="flex items-center gap-5">
             {user ? (
               <div className="hidden sm:flex items-center gap-3">
+                <Link
+                  href="/members"
+                  className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+                  title="进入会员区"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+                    <User className="h-5 w-5" />
+                  </div>
+                  <div className="max-w-[180px] text-left">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-600">
+                      已登录
+                    </p>
+                    <p className="truncate text-sm font-semibold text-slate-900">
+                      {userLabel}
+                    </p>
+                  </div>
+                </Link>
                 <Link
                   href="/members"
                   className="flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 bg-white text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-sm"
@@ -148,9 +174,19 @@ export function Navbar({ user }: { user: NavbarUser }) {
                 <div className="space-y-3">
                   <Link
                     href="/members"
-                    className="flex items-center justify-center gap-2 w-full py-4 rounded-xl border border-slate-200 bg-white text-slate-900 font-bold text-lg shadow-sm"
+                    className="flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-4 text-slate-900 shadow-sm"
                   >
-                    {user.email || "进入会员区"}
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+                      <User className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0 text-left">
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-600">
+                        已登录
+                      </p>
+                      <p className="truncate text-base font-bold text-slate-900">
+                        {user.email || userLabel}
+                      </p>
+                    </div>
                   </Link>
                   <form action="/auth/signout" method="post">
                     <button

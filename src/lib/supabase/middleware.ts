@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const protectedPrefixes = ["/docs", "/members", "/premium"];
+const protectedPrefixes = ["/members", "/premium"];
 const supabaseCookiePrefix = "sb-";
 
 export async function updateSupabaseSession(request: NextRequest) {

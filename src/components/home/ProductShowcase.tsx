@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container, Section } from "@/components/ui/Container";
-import { ArrowUpRight, Box, Command, Sparkles } from "lucide-react";
+import { ArrowUpRight, Heart, LineChart, Sparkles } from "lucide-react";
 
 /**
  * 独立产品展示 (Product Showcase)
@@ -8,26 +8,34 @@ import { ArrowUpRight, Box, Command, Sparkles } from "lucide-react";
  */
 const products = [
   {
-    id: "product-1",
-    name: "Prompt Flow Editor",
-    tagline: "可视化 Prompt 编排工具",
-    description: "专为复杂 AI 任务设计的节点式 Prompt 编辑器。通过拖拽即可完成多步推理、条件分支与数据清洗的 Prompt 流搭建，一键导出 API 配置。",
-    icon: Command,
-    url: "#", // 替换为真实链接
-    stats: "1.2k+ Active Users",
-    theme: "bg-slate-900 border-slate-800 text-white",
-    iconBg: "bg-slate-800 text-brand-400",
+    id: "lovecue",
+    name: "lovecue.app",
+    tagline: "AI 恋爱军师",
+    description: "全方位分析约会语境的高情商社交助手。支持原生跨应用自动化，只需通过系统快捷指令触发，即可直接在聊天软件内部一键生成并发送神回复。",
+    icon: Heart,
+    url: "https://lovecue.app",
+    stats: "🔥 快捷指令 · 自动回复",
+    isDark: false,
+    theme: "bg-white border-slate-200/60 shadow-xl shadow-slate-200/20 hover:shadow-xl hover:shadow-rose-500/10 hover:border-rose-200",
+    iconBg: "bg-gradient-to-br from-rose-400 to-rose-600 text-white shadow-lg shadow-rose-500/30",
+    tagColor: "text-rose-500",
+    statsColor: "text-rose-600",
+    btnClass: "bg-slate-50 text-slate-400 hover:bg-rose-500 hover:text-white"
   },
   {
-    id: "product-2",
-    name: "DocuMind AI",
-    tagline: "沉浸式 AI 知识库对话",
-    description: "极简的本地知识库 RAG 客户端。无需配置数据库，直接拖入 PDF/Markdown，即可在极速响应的界面中与你的专属资料库对话。",
-    icon: Box,
-    url: "#", // 替换为真实链接
-    stats: "Mac & Windows",
-    theme: "bg-white border-slate-200/60 shadow-xl shadow-slate-200/20 hover:shadow-glow",
-    iconBg: "bg-slate-50 text-indigo-500",
+    id: "doum",
+    name: "抖 M",
+    tagline: "一站式爆款挖掘神器",
+    description: "输入 creator_id、sec_uid 或抖音链接，秒速进入达人商业画像、相似图谱及粉丝词云。专为操盘手打造的达人挖掘、作品深度拆解与一键拉片提文案平台。",
+    icon: LineChart,
+    url: "#",
+    stats: "💎 数据洞察 · 竞品拆解",
+    isDark: true,
+    theme: "bg-slate-900 border-slate-800 text-white shadow-2xl hover:shadow-glow-indigo",
+    iconBg: "bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/40",
+    tagColor: "text-indigo-400",
+    statsColor: "text-brand-400",
+    btnClass: "bg-slate-800 text-white hover:bg-indigo-500 hover:text-white"
   },
 ];
 
@@ -64,34 +72,30 @@ export function ProductShowcase() {
             return (
               <div 
                 key={product.id}
-                className={`group relative rounded-[2rem] p-10 border transition-all duration-500 hover:-translate-y-2 ${product.theme} flex flex-col md:flex-row gap-8 items-start`}
+                className={`group relative rounded-[2rem] p-10 border transition-all duration-500 hover:-translate-y-2 flex flex-col md:flex-row gap-8 items-start ${product.theme}`}
               >
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 ${product.iconBg}`}>
-                  <Icon className="w-8 h-8" />
+                <div className={`w-16 h-16 rounded-[1.25rem] flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 ${product.iconBg}`}>
+                  <Icon className="w-8 h-8 drop-shadow-md" />
                 </div>
                 
                 <div className="flex-1">
-                  <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
+                  <div className={`text-[10px] font-black uppercase tracking-widest mb-2 ${product.tagColor}`}>
                     {product.tagline}
                   </div>
-                  <h3 className={`text-2xl font-black mb-4 tracking-tight ${product.theme.includes('bg-slate-900') ? 'text-white' : 'text-slate-900'}`}>
+                  <h3 className={`text-2xl font-black mb-4 tracking-tight ${product.isDark ? 'text-white' : 'text-slate-900'}`}>
                     {product.name}
                   </h3>
-                  <p className={`text-sm font-medium leading-relaxed mb-8 ${product.theme.includes('bg-slate-900') ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <p className={`text-sm font-medium leading-relaxed mb-8 ${product.isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                     {product.description}
                   </p>
                   
                   <div className="flex items-center justify-between mt-auto">
-                    <span className={`text-xs font-bold ${product.theme.includes('bg-slate-900') ? 'text-brand-400' : 'text-indigo-600'}`}>
+                    <span className={`text-[11px] font-bold ${product.statsColor}`}>
                       {product.stats}
                     </span>
                     <a 
                       href={product.url}
-                      className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors ${
-                        product.theme.includes('bg-slate-900') 
-                          ? 'bg-slate-800 text-white hover:bg-brand-500' 
-                          : 'bg-slate-50 text-slate-400 hover:bg-indigo-50 hover:text-indigo-600'
-                      }`}
+                      className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-300 ${product.btnClass}`}
                     >
                       <ArrowUpRight className="w-5 h-5" />
                     </a>

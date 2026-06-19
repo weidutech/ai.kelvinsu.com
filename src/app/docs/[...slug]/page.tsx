@@ -4,11 +4,35 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import matter from "gray-matter";
 import { Callout } from "@/components/ui/Callout";
-import { requireUser } from "@/lib/supabase/require-user";
+
+function normalizeDocImageSrc(src?: string) {
+  if (!src) return src;
+  if (/^(https?:)?\/\//.test(src) || src.startsWith("/")) {
+    return src;
+  }
+
+  if (/^(\.\.\/)+(?:images|screenshots)\//.test(src)) {
+    return `/${src.replace(/^(\.\.\/)+/, "")}`;
+  }
+
+  if (/^\.\/*(?:images|screenshots)\//.test(src)) {
+    return `/${src.replace(/^\.\//, "")}`;
+  }
+
+  return src;
+}
+
+function DocImage(props: React.ImgHTMLAttributes<HTMLImageElement>) {
+  const { src, alt, ...rest } = props;
+  const normalizedSrc = typeof src === "string" ? normalizeDocImageSrc(src) : undefined;
+
+  return <img {...rest} src={normalizedSrc} alt={alt ?? ""} />;
+}
 
 // Add any custom components you want to use in MDX here
 const components = {
   Callout,
+  img: DocImage,
 };
 
 export const dynamic = "force-dynamic";
@@ -19,7 +43,6 @@ export default async function DocPage({
   params: Promise<{ slug: string[] }>;
 }) {
   const { slug } = await params;
-  await requireUser(`/docs/${slug.join("/")}`);
   const filePath = path.join(process.cwd(), "src/content/docs", ...slug) + ".mdx";
 
   let fileContent;

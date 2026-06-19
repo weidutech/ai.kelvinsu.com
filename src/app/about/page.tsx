@@ -1,11 +1,11 @@
 import { Container, Section } from "@/components/ui/Container";
-import { ArrowRight, BookOpen, Briefcase, Code2, Globe2, Sparkles, Terminal } from "lucide-react";
+import { ArrowRight, BookOpen, Briefcase, Code2, Globe2, Mail, Sparkles, Terminal } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 export const metadata = {
   title: "关于我 - Kelvin Studio",
-  description: "了解 Kelvin，一线大厂 AI 研究员与独立开发者。",
+  description: "了解 Kelvin，一线大厂 AI 应用专家与独立开发者。",
 };
 
 const timeline = [
@@ -17,8 +17,8 @@ const timeline = [
   },
   {
     year: "过去",
-    title: "一线大厂 AI 研究员",
-    desc: "深度参与核心大语言模型与多模态项目的研发与落地。在复杂的工业级场景中，积累了丰富的 Prompt 工程、Agent 编排与系统优化经验，深谙 AI 技术在真实商业环境中的局限与突破口。",
+    title: "一线大厂 AI 应用工程师",
+    desc: "在头部大厂深度参与大语言模型与多模态 AI 应用的研发与商业化落地。在复杂的真实业务场景中，积累了丰富的 Prompt 工程、Agent 编排与系统优化经验，深谙 AI 技术的局限与突破口。",
     icon: Briefcase,
   },
   {
@@ -70,13 +70,38 @@ export default function AboutPage() {
               让机器替你打工，把时间留给创造。
             </p>
             
-            <div className="flex gap-4">
-              <a href="https://github.com/weidutech" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors">
-                <Code2 className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors">
-                <Globe2 className="w-5 h-5" />
-              </a>
+            <div className="flex flex-col gap-6">
+              <div className="flex gap-4">
+                <a href="https://github.com/weidutech" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors">
+                  <Code2 className="w-5 h-5" />
+                </a>
+                <a href="mailto:kelvinsu13@163.com" className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors">
+                  <Mail className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-sm transition-colors">
+                  <Globe2 className="w-5 h-5" />
+                </a>
+              </div>
+              <div className="inline-flex items-center gap-2 text-sm font-bold text-slate-500">
+                <Mail className="w-4 h-4" />
+                <a href="mailto:kelvinsu13@163.com" className="hover:text-slate-900 transition-colors">kelvinsu13@163.com</a>
+              </div>
+              
+              <div className="pt-6 border-t border-slate-200">
+                <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">全网同名自媒体</h3>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { name: '小红书', color: 'text-red-500 bg-red-50' },
+                    { name: '抖音', color: 'text-slate-900 bg-slate-100' },
+                    { name: '视频号', color: 'text-orange-500 bg-orange-50' }
+                  ].map(platform => (
+                    <div key={platform.name} className="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-200/60 shadow-sm hover:border-slate-300 transition-colors cursor-default">
+                      <div className={`px-2.5 py-1 rounded-lg text-[10px] font-black ${platform.color}`}>{platform.name}</div>
+                      <span className="text-sm font-bold text-slate-700">Kelvin AI 大厂研究员</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -97,7 +122,7 @@ export default function AboutPage() {
                   在这个“人人谈 AI，处处是红利”的时代，作为一名真正从事底层模型研究的技术人员，我看到了太多被包装的概念和贩卖焦虑的“神课”。
                 </p>
                 <p>
-                  我拥有 <strong>QS Top 10 高校</strong>的学术背景，并且在<strong>一线大厂的 AI 核心部门</strong>真枪实弹地打磨过工业级模型。我深知大语言模型的极限在哪里，知道什么是“玩具”，什么是真正的“生产力”。
+                  我拥有 <strong>QS Top 10 高校</strong>的学术背景，并且在<strong>一线大厂的真实业务线</strong>中真枪实弹地打磨过多款工业级 AI 应用。我深知大语言模型的极限在哪里，知道什么是“玩具”，什么是真正的“生产力”。
                 </p>
                 <p>
                   离开纯粹的实验室，我更喜欢作为一名<strong>独立开发者</strong>，用代码去解决真实世界的问题。无论是 To C 的个人效率工具，还是 To B 的企业定制化闭环，我的准则只有一个：<strong>只讲跑通的实战，只给能落地成金钱或时间的干货。</strong>

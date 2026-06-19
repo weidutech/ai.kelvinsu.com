@@ -120,9 +120,14 @@ export default async function MembersPage() {
             <div className="mt-5 grid gap-4 md:grid-cols-3">
               {[
                 {
-                  title: "教程知识库",
+                  title: "免费知识库",
                   href: "/docs/guide/00-overview",
-                  description: "现在文档内容已经只对登录用户开放。",
+                  description: "先用公开教程跑通第一轮，再决定要不要继续系统升级。",
+                },
+                {
+                  title: "付费知识库",
+                  href: "/members/paid-knowledge-base",
+                  description: "会员专属的 tab 内容区，后续的模板、案例和进阶更新都可以往这里收。",
                 },
                 {
                   title: "会员介绍页",

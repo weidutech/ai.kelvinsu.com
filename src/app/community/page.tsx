@@ -82,11 +82,8 @@ export default function CommunityPage() {
 
               {/* Mock QR Code Frame */}
               <div className="relative p-3 bg-white rounded-2xl shadow-xl w-56 h-56 mx-auto mb-6 z-10">
-                {/* 这里的图片可以替换为你真实的微信二维码图片 */}
-                <div className="w-full h-full border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-400 gap-3">
-                  <QrCode className="w-8 h-8 opacity-20" />
-                  <span className="text-[10px] font-black uppercase tracking-widest opacity-50">QR Code Here</span>
-                </div>
+                {/* 真实的微信二维码图片 */}
+                <img src="/images/wechat-group.jpg" alt="社群二维码" className="w-full h-full rounded-xl object-cover shadow-sm" />
 
                 {/* Decorative scanning corners */}
                 <div className="absolute top-2 left-2 w-4 h-4 border-t-4 border-l-4 border-amber-500 rounded-tl-lg"></div>

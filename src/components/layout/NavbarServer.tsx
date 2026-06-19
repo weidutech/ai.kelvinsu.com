@@ -1,8 +1,14 @@
 import { Navbar } from "@/components/layout/Navbar";
-import { getOptionalServerUserClaims } from "@/lib/supabase/claims";
+import { getOptionalNavbarUserClaims } from "@/lib/supabase/claims";
 
 export async function NavbarServer() {
-  const claims = await getOptionalServerUserClaims();
+  let claims = null;
+
+  try {
+    claims = await getOptionalNavbarUserClaims();
+  } catch {
+    claims = null;
+  }
 
   return (
     <Navbar
