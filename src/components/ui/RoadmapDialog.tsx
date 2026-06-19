@@ -74,7 +74,7 @@ export function RoadmapDialog({ children }: { children: React.ReactNode }) {
         <div className="p-8 md:p-12 overflow-y-auto custom-scrollbar relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-brand-600">
             <Sparkles className="w-3.5 h-3.5" />
-            Kelvin's Philosophy
+            Kelvin&apos;s Philosophy
           </div>
           
           <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-6 leading-tight">
