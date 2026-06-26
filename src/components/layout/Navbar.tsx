@@ -14,6 +14,7 @@ const navItems = [
   { name: "首页", href: "/" },
   { name: "免费知识库", href: "/docs/guide/00-overview" },
   { name: "付费知识库", href: "/members/paid-knowledge-base" },
+  { name: "1v1诊断", href: "/diagnosis" },
   { name: "私域社群", href: "/community" },
   { name: "独立产品", href: "/products" },
   { name: "关于我", href: "/about" },
